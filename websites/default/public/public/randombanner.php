@@ -4,7 +4,8 @@
 
 */
 $files = [];
-foreach (new DirectoryIterator('./banners') as $file) {
+$dirImage = '../public/images/banners';
+foreach (new DirectoryIterator($dirImage) as $file) {
 	/*
 		ignore:
 			.   - current directory
@@ -29,8 +30,6 @@ foreach (new DirectoryIterator('./banners') as $file) {
 	*/
 	$files[] = $file->getFileName();
 }
-
-
 
 /*
 
@@ -69,7 +68,7 @@ header("Pragma: no-cache");
 	Load the image data into the $contents variable
 	so it can be printed later on
 */
-$contents = load_file('./banners/' . $file);
+$contents = load_file($dirImage .  '/' . $file);
 
 /*
 	Tell the browser how big (in bytes) the image is
