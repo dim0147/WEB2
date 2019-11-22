@@ -1,12 +1,14 @@
 <?php 
  class product extends Controller{
 
-    function __construct(){
-        $this->model = $this->loadModel(dirname(__DIR__) . '/model/product_model.php', 'Product_model');
+    function __construct($view){
+        $modelFile = dirname(__DIR__) . '/model/product_model.php';
+        $modelName = 'Product_model';
+        parent::__construct($view, $modelFile, $modelName);
     }
 
     public function detail(){
-        render(__DIR__ . '/../view/detail.php');
+        $this->render(__DIR__ . '/../view/detail.php', ['title' => "Product detail"]);
     }
 
  }

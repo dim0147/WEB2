@@ -12,7 +12,7 @@
                 header('Location: ' . URL_WEB);
                 exit();
             }
-            $this->render(__DIR__ . '/../view/login.php', ['title' => 'admin'], true, false, false);
+            $this->render(__DIR__ . '/../view/login.php', ['title' => 'Login Admin'], true, false, false);
         }
 
         public function postLogin(){
@@ -48,7 +48,7 @@
                 header('Location: ' . URL_WEB);
                 exit();
             }
-            render(__DIR__ . '/../view/register.php', TRUE, FALSE);
+            $this->render(__DIR__ . '/../view/register.php', ['title' => 'Register Admin'], TRUE, FALSE);
         }
 
         public function postRegister(){
@@ -71,7 +71,7 @@
 
         public function addCate(){
             $this->Authenticate();
-            render(__DIR__ . '/../view/add-category.php', TRUE, FALSE);
+            $this->render(__DIR__ . '/../view/add-category.php', ['title' => 'Add Category'], TRUE, FALSE);
         }
 
         public function postAddCate(){
@@ -104,7 +104,7 @@
                 exit();
             }
             $category = $checkExist[0];
-            render(__DIR__ . '/../view/edit-category.php', TRUE, FALSE, TRUE, $category);
+            $this->render(__DIR__ . '/../view/edit-category.php', ['title' => 'Edit Category', 'category' => $category], TRUE, FALSE, TRUE);
         }
 
         public function postEditCate(){
@@ -141,7 +141,7 @@
                 exit();
             }
             $category = $checkExist[0];
-            render(__DIR__ . '/../view/remove-category.php', TRUE, FALSE, TRUE, $category);
+            $this->render(__DIR__ . '/../view/remove-category.php', ['title' => 'Remove Category', 'category' => $category], TRUE, FALSE, TRUE);
         }
 
         public function postRemoveCate(){
@@ -164,7 +164,7 @@
 
         public function Authenticate(){
             if(empty($_SESSION['username'])){
-                setHTTPCode(404);
+                setHTTPCode(404, "You don't have permission to access this site!");
                 exit();
             }
         }
