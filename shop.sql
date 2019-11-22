@@ -3,25 +3,25 @@ CREATE TABLE `product` (
   `name` varchar(70) NOT NULL,
   `description` varchar(150),
   `image` char(70),
-  `bird_max_price` decimal(5,2),
-  `bird_minimum_price` decimal(5,2),
-  `hot_price` decimal(5,2),
-  `created_at` timestamp NOT NULL ,
+  `bird_max_price` decimal(5, 2),
+  `bird_minimum_price` decimal(5, 2),
+  `hot_price` decimal(5, 2),
+  `created_at` timestamp NOT NULL,
   `end_at` timestamp NOT NULL
 );
 
 CREATE TABLE `product_bird` (
   `product_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `price` decimal(5,2) NOT NULL,
-  `created_at` timestamp 
+  `price` decimal(5, 2) NOT NULL,
+  `created_at` timestamp
 );
 
 CREATE TABLE `product_review` (
   `product_id` int NOT NULL,
   `user_id` int NOT NULL,
   `comment` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL 
+  `created_at` timestamp NOT NULL
 );
 
 CREATE TABLE `user` (
@@ -29,7 +29,8 @@ CREATE TABLE `user` (
   `username` char UNIQUE NOT NULL,
   `password` char NOT NULL,
   `name` varchar(255),
-  `created_at` timestamp 
+  `created_at` timestamp,
+  `type` varchar(50) NOT NULL
 );
 
 CREATE TABLE `category` (

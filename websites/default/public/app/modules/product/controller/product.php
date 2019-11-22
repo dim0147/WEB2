@@ -6,7 +6,7 @@
     }
 
     public function detail(){
-        $this->model->index();
+        render(__DIR__ . '/../view/detail.php');
     }
 
  }

@@ -12,8 +12,8 @@
         
         function __construct($table){
             try{
-                $pdo = new PDO("mysql:host=$this->host;dbname=$this->dbName", $this->username, $this->password);
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $this->pdo = new PDO("mysql:host=$this->host;dbname=$this->dbName", $this->username, $this->password);
+                $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->table = $table;
             }
             catch(PDOException $ex){

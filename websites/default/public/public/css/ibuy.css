@@ -183,7 +183,7 @@ main form label, main form input {
 	margin-left: 0;
 }
 
-main form input[type=submit] {
+ form input[type=submit] {
 	background-color: #3665f3;
 	color: white;
 	flex-grow: 0;
