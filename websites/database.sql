@@ -839,7 +839,7 @@ CREATE TABLE `category` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `name_2` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -848,7 +848,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (5,'Electronics'),(6,'Fashion'),(8,'Health'),(4,'Home'),(7,'Sport'),(9,'Toys');
+INSERT INTO `category` VALUES (5,'Electronics'),(6,'Fashion'),(8,'Health'),(4,'Home'),(12,'indie1'),(7,'Sport'),(9,'Toys');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -980,7 +980,7 @@ CREATE TABLE `user` (
   `type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -989,7 +989,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (4,'dinh','$2y$10$zln.7DRPz8iwoX/gN1F/te8swflQYQAESEG74vLBs6sjMGrqDAZxK','Dinh','2019-11-20 12:32:23','admin'),(5,'popinder','$2y$10$rtAla9tRUuuXcS3thpM4puxiZcOjyRZ6aMezt0tVszF4LkXXZfcNS','pOPINDER','2019-11-20 12:38:05','admin');
+INSERT INTO `user` VALUES (4,'dinh','$2y$10$zln.7DRPz8iwoX/gN1F/te8swflQYQAESEG74vLBs6sjMGrqDAZxK','Dinh','2019-11-20 12:32:23','admin'),(5,'popinder','$2y$10$rtAla9tRUuuXcS3thpM4puxiZcOjyRZ6aMezt0tVszF4LkXXZfcNS','pOPINDER','2019-11-20 12:38:05','admin'),(6,'duc','$2y$10$rSuLnJWpskVoqqT4y0QGWO8fnBWqpIH5/JHSGpVdeUW67LtmN5.Zu','DinhDuc','2019-11-22 07:37:39','admin'),(10,'dinh123','$2y$10$Ox/j.gEwf1ZgTyegABoe/eiek1RhTXrayWm2JeupXSA.zSnFe8n.u','Dinh','2019-11-23 16:28:10','user');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1002,4 +1002,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-20 16:13:51
+-- Dump completed on 2019-11-23 16:53:32

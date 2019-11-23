@@ -1,8 +1,8 @@
 <?php 
     class Product_model extends Database{
 
-        function __construct($table = 'product'){
-            parent::__construct($table);
+        function __construct(){
+            parent::__construct();
         }
 
         public function index(){

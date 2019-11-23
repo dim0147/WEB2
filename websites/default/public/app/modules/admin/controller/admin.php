@@ -44,15 +44,10 @@
 
         public function register(){
             // Login already
-            if(!empty($_SESSION['username'])){
-                header('Location: ' . URL_WEB);
-                exit();
-            }
             $this->render(__DIR__ . '/../view/register.php', ['title' => 'Register Admin'], TRUE, FALSE);
         }
 
         public function postRegister(){
-
             if(!empty($_SESSION['username']) || empty($_POST['name']) || empty($_POST['username']) || empty(['password'])){
                 setHTTPCode(406);
                 exit();
@@ -164,6 +159,17 @@
 
         public function Authenticate(){
             if(empty($_SESSION['username'])){
+                setHTTPCode(404, "You don't have permission to access this site!");
+                exit();
+            }
+            $getAdmin = $this->model->checkAdminExist($_SESSION['username']);
+                //  If not found or result more than 1
+            if(!$getAdmin || count($getAdmin) !== 1){
+                setHTTPCode(404, "You don't have permission to access this site!");
+                exit();
+            }
+                //  If not Admin
+            if($getAdmin[0]['type'] !== 'admin'){
                 setHTTPCode(404, "You don't have permission to access this site!");
                 exit();
             }

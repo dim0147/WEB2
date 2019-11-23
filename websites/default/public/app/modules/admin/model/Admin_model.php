@@ -2,8 +2,8 @@
 
 class Admin_model extends Database{
 
-    function __construct($table = 'user'){
-        parent::__construct($table);
+    function __construct(){
+        parent::__construct();
     }
 
     public function checkAdminExist($username){

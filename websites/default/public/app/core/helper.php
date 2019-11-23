@@ -114,24 +114,3 @@
 		$lengthEnd = strlen($start) + strlen($content) + strlen($end);
 		return substr_replace($string, '', $ini, $lengthEnd);
 	}
-
-	function printB($arr){
-		print("<pre>".print_r($arr,true)."</pre>");
-	}
-
-	function compile($holdPlaced, $regexp, $tag, $yield, $element, $content){
-		preg_match_all($regexp, $content, $matches, PREG_SET_ORDER, 0);
-		if(count($matches) < 1){
-			return false;
-		}
-			foreach($matches as $value){
-				$content = insertString($value[0], $holdPlaced, $content);
-			}
-			$content = deleteString($content, $tag[0], $tag[1]);
-			if($content === FALSE)
-				return false;
-			$content = deleteString($content, $yield);
-			if($content === FALSE)
-				return false;
-			return $content;
-	}

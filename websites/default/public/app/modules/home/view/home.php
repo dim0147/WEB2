@@ -1,5 +1,4 @@
 
-    
     <img src="<?php echo URL_WEB?>public/randombanner.php" alt="Banner" />
 
     <main>
