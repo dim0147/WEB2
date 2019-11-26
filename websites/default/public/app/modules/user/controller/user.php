@@ -180,9 +180,10 @@ class user extends Controller{
         if($userID != $own_product)
             exit("You are not the owner of this auction!");
         $allCate = $this->model->getCateArr();
-        if(!is_array($product['category_name']))
-            $allCate = array_diff($allCate, [$product['category_name']]);
-        else
+        if(!$allCate)
+            exit("Cannot find any category, please add some category!");
+        //  If is array and not empty
+        if(is_array($product['category_name']) && !empty($product['category_name']))   
             $allCate = array_diff($allCate, $product['category_name']);
         $this->render(__DIR__. '/../view/edit_auction.php', ['title' => "Edit auction", "product" => $product, "cateOutProduct" => $allCate], TRUE, FALSE);
     }
@@ -191,8 +192,7 @@ class user extends Controller{
         $this->checkPostEditRequest();
         if(empty($_SESSION['username']))
             exit("Require login!");
-        if((int)$_POST['minimum_price'] < 0 || (int)$_POST['maximum_price'] < 0 || (int)$_POST['hot_price'] < 0)
-            exit("Price is not valid!");
+        $this->validPrice();
         //  Check if end_Date smaller than current time
         if(strtotime($_POST['end_date']) <= time()){
             setHTTPCode(400, "End date smaller than current date!!");
@@ -246,10 +246,15 @@ class user extends Controller{
                 deleteImage($name);
             }
         }
+        //  Delete category
         if(!empty($_POST['category'])){
+            //  Get id of category of product
             $IdsCateProd = array_keys($product['category_name']);
+            //  Get category need to add
             $addCate = array_diff($_POST['category'], $IdsCateProd);
+            //  Get category need to delete
             $delCate = array_diff($IdsCateProd, $_POST['category']);
+            //  Check if not empty, perform action
             if(!empty($addCate))
                 $this->model->createCategoryProduct($addCate, $_POST['id']);
             if(!empty($delCate))
@@ -260,13 +265,13 @@ class user extends Controller{
 
     public function validPrice(){
         //  Check if is number and not equal or small than 0
-        if((!empty($_POST['maximum_price']) && (!is_numeric($_POST['maximum_price']) || (float)$_POST['maximum_price'] <= 0 )) || 
-           (!empty($_POST['minimum_price']) && (!is_numeric($_POST['minimum_price']) || (float)$_POST['minimum_price'] <= 0 )) ||
-           (!empty($_POST['hot_price']) && (!is_numeric($_POST['hot_price']) || (float)$_POST['hot_price'] <= 0 )))
+        if((!empty($_POST['maximum_price']) && (!is_numeric($_POST['maximum_price']) || (float)$_POST['maximum_price'] < 0.00 )) || 
+           (!empty($_POST['minimum_price']) && (!is_numeric($_POST['minimum_price']) || (float)$_POST['minimum_price'] < 0.00 )) ||
+           (!empty($_POST['hot_price']) && (!is_numeric($_POST['hot_price']) || (float)$_POST['hot_price'] < 0.00 )))
             exit("Please enter a valid Number!");
 
         //  Check if not empty minimum price and maximum price
-        if(!empty($_POST['minimum_price']) && !empty($_POST['maximum_price'])){
+        if(!empty($_POST['minimum_price']) && !empty($_POST['maximum_price'])  && (float)$_POST['maximum_price'] !== 0.00){
             //  Convert to float
             $minimum = (float)$_POST['minimum_price'];
             $maximum = (float)$_POST['maximum_price'];
@@ -275,7 +280,7 @@ class user extends Controller{
         }
 
         //  Check if not empty minimum price and hot price
-        if(!empty($_POST['minimum_price']) && !empty($_POST['hot_price'])){
+        if(!empty($_POST['minimum_price']) && !empty($_POST['hot_price']) && (float)$_POST['hot_price'] !== 0.00){
             //  Convert to float
             $minimum = (float)$_POST['minimum_price'];
             $hot = (float)$_POST['hot_price'];

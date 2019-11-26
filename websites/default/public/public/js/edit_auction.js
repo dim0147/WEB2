@@ -21,7 +21,6 @@ window.onload = function(){
         xhr.addEventListener('load', function(event) {
            alert(xhr.responseText);
            console.log(xhr.responseText);
-           window.location.href = "https://" + window.location.host + "/product/detail?id=" + idProduct;
         });
 
         xhr.open('POST', 'https://' + window.location.hostname + '/user/postEditAuction');

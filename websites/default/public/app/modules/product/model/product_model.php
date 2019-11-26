@@ -66,25 +66,32 @@
                     continue;
                 }
                 $newArr = array_merge_recursive($newArr, $product);
+                //  No overwrite 
                 unset($product['product_thumbnail']);
                 unset($product['category_name']);
                 $newArr = array_replace($newArr, $product);
             }
             if(!empty($newArr)){
-                if(is_array($newArr['category_name']))
-                    $newArr['category_name'] = implode(' , ', $newArr['category_name']);
-
-                if (empty($newArr['product_thumbnail'])  || array_filter($newArr['product_thumbnail']) == []) {
-                    $newArr['product_thumbnail'] = [];
+                //  Check if is array and the first value not null
+                if(is_array($newArr['category_name']) && !(array_filter($newArr['category_name']) == [])){
+                    $newArr['category_name'] = array_unique($newArr['category_name']);  //  Remove duplicate value
+                    $newArr['category_name'] = implode(' , ', $newArr['category_name']);    //  Return a string
                 }
-                else if(!empty($newArr['product_thumbnail']))
+                //  Check if not empty and is array but first value of array is null
+                else if(!empty($newArr['category_name']) && is_array($newArr['category_name']) && array_filter($newArr['category_name']) == [])
+                    $newArr['category_name'] = NULL;
+
+
+                //  Check if is array and the first value not null
+                if(is_array($newArr['product_thumbnail']) && !(array_filter($newArr['product_thumbnail']) == []))
                     $newArr['product_thumbnail'] = array_unique($newArr['product_thumbnail']);
+                //  Check if not empty and is array but first value of array is null
+                else if(!empty($newArr['product_thumbnail']) && is_array($newArr['product_thumbnail']) && array_filter($newArr['product_thumbnail']) == [])
+                    $newArr['product_thumbnail'] = NULL;
 
                 if(empty($newArr['current_bird_price']))
                     $newArr['current_bird_price'] = 0.00;
-
-                if((int)$newArr['bird_minimum_price'] === 0)
-                    $newArr['current_bird_price'] = 0.00;
+            
                 $newArr['elapsed_time'] = calculateTime($newArr['created_at'], $newArr['end_at']);
             }
             return $newArr;

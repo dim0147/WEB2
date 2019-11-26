@@ -8,7 +8,7 @@
         <div>
         <img src="<?php echo URL_WEB . "public/images/".$product['image']?>" style="width:700px; height:300px" alt="product name"><br>
        
-        <?php if(!empty($product['product_thumbnail'])){
+        <?php if(!empty($product['product_thumbnail']) && is_array($product['product_thumbnail'])){
             echo " <h4>Thumbnail:</h4> <br>";
                 foreach($product['product_thumbnail'] as $name){    
         ?>
@@ -18,18 +18,20 @@
         
         <section class="details">
             <h2><?php echo $product['name'] ?></h2>
-            <h3><?php echo $product['category_name'] ?></h3>
+            <?php if(!empty($product['category_name']) && !is_array($product['category_name']))
+                    echo "<h3>" .$product['category_name'] . "</h3>";
+            ?>
             <p>Auction created by <a href="#"><?php echo $product['own_product'] ?></a></p>
             <p class="price">Current bid: £<?php echo $product['current_bird_price'] ?></p>
             <?php 
-            if((int)$product['bird_minimum_price'] !== 0){
+            if((float)$product['bird_minimum_price'] !== 0.00){
             ?>
                 <p class="price">Minimum bid: £<?php echo $product['bird_minimum_price'] ?></p>
                 <p class="price">*Please bird more than £<?php echo $product['bird_minimum_price'] ?></p>
             <?php } ?>
 
             <?php 
-            if((int)$product['bird_max_price'] !== 0){
+            if((float)$product['bird_max_price'] !== 0.00){
             ?>
                 <p class="price">Maximum bid: £<?php echo $product['bird_max_price'] ?></p>
             <?php } ?>

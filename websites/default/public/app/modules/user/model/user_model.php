@@ -289,47 +289,53 @@ class User_model extends Database{
             unset($product['thumbnail_id']);
             unset($product['category_id']);
             $newArr = array_replace($newArr, $product);
-            $newArr['product_thumbnail'] = array_unique($newArr['product_thumbnail']);
-            $newArr['category_name'] = array_unique($newArr['category_name']);
-            $newArr['thumbnail_id'] = array_unique($newArr['thumbnail_id']);
-            $newArr['category_id'] = array_unique($newArr['category_id']);
         }
 
         if(!empty($newArr)){
-            // Check thumbnail If have one thumbnail
+            if(is_array($newArr['product_thumbnail']))
+                $newArr['product_thumbnail'] = array_unique($newArr['product_thumbnail']);
+            if(is_array($newArr['category_name']))
+                $newArr['category_name'] = array_unique($newArr['category_name']);
+            if(is_array($newArr['thumbnail_id']))
+                $newArr['thumbnail_id'] = array_unique($newArr['thumbnail_id']);
+            if(is_array($newArr['category_id']))
+                $newArr['category_id'] = array_unique($newArr['category_id']);
+            // Check thumbnail if have one thumbnail is a string
             if(!is_array($newArr['product_thumbnail']) && !empty($newArr['product_thumbnail'])){
                 $idThumbnail = $newArr['thumbnail_id'];
                 $nameThumbnail = $newArr['product_thumbnail'];
-                unset($newArr['product_thumbnail']);
                 $newArr['product_thumbnail'] = [$idThumbnail => $nameThumbnail];
             }
-            else if(is_array($newArr['product_thumbnail']) && !empty(array_values($newArr['product_thumbnail'])[0])){    //  Have more than 1 category
-               
+            // Check if is array and first element of product thumbnail not equal NULL
+            else if(is_array($newArr['product_thumbnail']) && !empty(array_values($newArr['product_thumbnail'])[0])){ 
+                //  Combine ID, "ID" is key and "name" is value, eg: [16 => pant.jpg]
                 $newArr['product_thumbnail'] = array_combine($newArr['thumbnail_id'], $newArr['product_thumbnail']);
             }
-            else{   //  Don't have
-                echo "ok";
+            else{   //  Equal NULL
                 $newArr['product_thumbnail'] = NULL;
             }
 
-            //  Check category If have one category
+            //  Check category If have one category, only string
             if(!is_array($newArr['category_name']) && !empty($newArr['category_name'])){
                 $idCate = $newArr['category_id'];
                 $nameCate = $newArr['category_name'];
-                unset($newArr['category_name']);
                 $newArr['category_name'] = [$idCate => $nameCate];
             }
-            else if(is_array($newArr['category_name'])){    //  Have more than 1 category
+            // Check if is array and first element of category_name not equal NULL
+            else if(is_array($newArr['category_name']) && !empty(array_values($newArr['category_name'])[0]) ){    //  Have more than 1 category
+                //  Combine ID, "ID" is key and "name" is value, eg: [16 => Electronic]
                 $newArr['category_name'] = array_combine($newArr['category_id'], $newArr['category_name']);
             }
-            else{   //  Don't have
+            else{   //  Equal NULL
                 $newArr['category_name'] = [];
             }
-
+            //  If nobody bird yet
             if(empty($newArr['current_bird_price']))
                 $newArr['current_bird_price'] = 0.00;
+            //  Remove field when finish assign
             unset($newArr['thumbnail_id']);
             unset($newArr['category_id']);
+            
             $newArr['elapsed_time'] = calculateTime($newArr['created_at'], $newArr['end_at']);
         }
         return $newArr;
