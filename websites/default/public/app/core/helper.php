@@ -1,4 +1,7 @@
 <?php 
+function printB($arr){
+    print("<pre>".print_r($arr,true)."</pre>");
+}
 
     /**
      *  Render View, optional render header, footer
@@ -42,8 +45,7 @@
 		 * @param	string	
 		 * @return	void
 		 */
-	function setHTTPCode($code, $strStatus = '')
-	{
+	function setHTTPCode($code, $strStatus = '', $print = TRUE){
 		$statusCode = array(
 							200	=> 'OK',
 							201	=> 'Created',
@@ -77,6 +79,7 @@
 		}
 		
 		http_response_code($code);
+		if($print)
 		echo $strStatus;
 	}
 
@@ -113,4 +116,34 @@
 		$content = getStringBetween($string, $start, $end);
 		$lengthEnd = strlen($start) + strlen($content) + strlen($end);
 		return substr_replace($string, '', $ini, $lengthEnd);
+	}
+
+	function createImgName($nameImg, $length = 5){
+			$characters = 'tuvwxyzANOlmnopqrsPQRSTU89abcdefghi01234567jkBCDEFGHIJKLMVWXYZ';
+			$rand = '';
+			$newNameImg = '';
+			do{
+				for ($i = 0; $i < $length; $i++){
+					$lengthSub = strlen($characters) -1;
+					$element = rand(0, $lengthSub);
+					$rand .= $characters[$element];
+				}
+				$newNameImg = $rand . '_' . $nameImg;
+			}while(file_exists(PATH_IMAGE_UPLOAD . '/' . $newNameImg));
+			return $newNameImg;
+	}
+
+	function calculateTime($start, $end, $format = '%m months %d days %H hours %i minutes %s seconds'){
+		$start = new DateTime($start);
+		$end = new DateTime($end);
+		$elapsed = $start->diff($end);
+		return $elapsed->format($format);
+	}
+
+	function deleteImage($image){
+		if(file_exists(__DIR__ . '/../../public/images/' .$image)){
+			unlink(__DIR__ . '/../../public/images/' . $image);
+			return true;
+		}
+		return FALSE;
 	}

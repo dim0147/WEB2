@@ -1,37 +1,63 @@
-
+[js]
+<script src="<?php echo URL_WEB . "public/js/product_detail.js" ?>"></script>
+[/js]
     <h1>Product Page</h1>
     <article class="product">
 
-        <img src="<?php echo URL_WEB?>public/images/product.png" alt="product name">
+        
+        <div>
+        <img src="<?php echo URL_WEB . "public/images/".$product['image']?>" style="width:700px; height:300px" alt="product name"><br>
+       
+        <?php if(!empty($product['product_thumbnail'])){
+            echo " <h4>Thumbnail:</h4> <br>";
+                foreach($product['product_thumbnail'] as $name){    
+        ?>
+        <img style="width:100px;height:80px;" src="<?php echo URL_WEB . 'public/images/'.$name?>" alt="">
+        <?php }} ?>
+        </div>
+        
         <section class="details">
-            <h2>Product name</h2>
-            <h3>Product category</h3>
-            <p>Auction created by <a href="#">User.Name</a></p>
-            <p class="price">Current bid: £123.45</p>
-            <time>Time left: 8 hours 3 minutes</time>
-            <form action="#" class="bid">
-                <input type="text" placeholder="Enter bid amount" />
-                <input type="submit" value="Place bid" />
+            <h2><?php echo $product['name'] ?></h2>
+            <h3><?php echo $product['category_name'] ?></h3>
+            <p>Auction created by <a href="#"><?php echo $product['own_product'] ?></a></p>
+            <p class="price">Current bid: £<?php echo $product['current_bird_price'] ?></p>
+            <?php 
+            if((int)$product['bird_minimum_price'] !== 0){
+            ?>
+                <p class="price">Minimum bid: £<?php echo $product['bird_minimum_price'] ?></p>
+                <p class="price">*Please bird more than £<?php echo $product['bird_minimum_price'] ?></p>
+            <?php } ?>
+
+            <?php 
+            if((int)$product['bird_max_price'] !== 0){
+            ?>
+                <p class="price">Maximum bid: £<?php echo $product['bird_max_price'] ?></p>
+            <?php } ?>
+            
+            
+            <time>Time left: <?php echo $product['elapsed_time'] ?></time>
+            <form action="<?php echo URL_WEB . "product/postPlaceBid"?>" class="bid" method="POST">
+                <input name="amount" type="number" min="0.00"  placeholder="Enter bid amount" required/>
+                <input name="id" type="hidden" value="<?php echo $product['id']?>"/>
+                <input type="submit" id="placebid" value="Place bid" />
             </form>
         </section>
         <section class="description">
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sodales ornare purus, non laoreet dolor sagittis id. Vestibulum lobortis laoreet nibh, eu luctus purus volutpat sit amet. Proin nec iaculis nulla. Vivamus nec tempus quam, sed dapibus massa. Etiam metus nunc, cursus vitae ex nec, scelerisque dapibus eros. Donec ac diam a ipsum accumsan aliquet non quis orci. Etiam in sapien non erat dapibus rhoncus porta at lorem. Suspendisse est urna, egestas ut purus quis, facilisis porta tellus. Pellentesque luctus dolor ut quam luctus, nec porttitor risus dictum. Aliquam sed arcu vehicula, tempor velit consectetur, feugiat mauris. Sed non pellentesque quam. Integer in tempus enim.</p>
+            <?php echo $product['description'] ?>
+            </p>
 
         </section>
 
         <section class="reviews">
             <h2>Reviews of User.Name </h2>
-            <ul>
-                <li><strong>Ali said </strong> great ibuyer! Product as advertised and delivery was quick <em>29/09/2019</em></li>
-                <li><strong>Dave said </strong> disappointing, product was slightly damaged and arrived slowly.<em>22/07/2019</em></li>
-                <li><strong>Susan said </strong> great value but the delivery was slow <em>22/07/2019</em></li>
-
+            <ul id="review-body">
             </ul>
 
-            <form>
+            <form action="<?php echo URL_WEB ."product/postReview"?>" method="POST">
                 <label>Add your review</label>
-                <textarea name="reviewtext"></textarea>
+                <input type="hidden" id="getID" name="id" value="<?php echo $product['id']?>">
+                <textarea name="review_text"></textarea>
 
                 <input type="submit" value="Add Review" />
             </form>

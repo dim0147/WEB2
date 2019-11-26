@@ -42,13 +42,13 @@
             //  Validate  css
             if(strpos($content, "<@yield css>") !== FALSE)
                 $content = $this->cssCompiler($content);
-            if(strpos($content, "[css]") !== FALSE || strpos($content, "[\css]") !== FALSE)
+            if(strpos($content, "[css]") !== FALSE || strpos($content, "[/css]") !== FALSE)
                 die("Require <@yield css> to use [css] tag!");
 
             //  Validate  js script
             if(strpos($content, "<@yield js>") !== FALSE)
                 $content = $this->scriptCompiler($content);
-            if(strpos($content, "[js]") !== FALSE || strpos($content, "[\js]") !== FALSE)
+            if(strpos($content, "[js]") !== FALSE || strpos($content, "[/js]") !== FALSE)
                 die("Require <@yield js> to use [js] tag!");
             return $content;
         }

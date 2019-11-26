@@ -9,14 +9,10 @@
 
 		<nav>
 			<ul>
-				<li><a href="#">Home &amp; Garden</a></li>
-				<li><a href="#">Electronics</a></li>
-				<li><a href="#">Fashion</a></li>
-				<li><a href="#">Sport</a></li>
-				<li><a href="#">Health</a></li>
-				<li><a href="#">Toys</a></li>
-				<li><a href="#">Motors</a></li>
-				<li><a href="#">More</a></li>
+			<?php if(!empty($category)){ ?>
+			<?php foreach($category as $value){ ?>
+			<?php  echo "<li><a href='#'>" . $value['name'] . "</a></li>";?>
+			<?php  }}?>
 			</ul>
 		</nav>
 

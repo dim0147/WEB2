@@ -2,43 +2,23 @@
     <img src="<?php echo URL_WEB?>public/randombanner.php" alt="Banner" />
 
     <main>
-
         <h1>Latest Listings / Search Results / Category listing</h1>
 
         <ul class="productList">
+            <?php foreach($products as $prod){ ?>
             <li>
-                <img src="<?php echo URL_WEB?>public/images/product.png" alt="product name">
+                <img src="<?php echo URL_WEB . "public/images/" . $prod['image']?>" alt="product name">
                 <article>
-                    <h2>Product name</h2>
-                    <h3>Product category</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sodales ornare purus, non laoreet dolor sagittis id. Vestibulum lobortis laoreet nibh, eu luctus purus volutpat sit amet. Proin nec iaculis nulla. Vivamus nec tempus quam, sed dapibus massa. Etiam metus nunc, cursus vitae ex nec, scelerisque dapibus eros. Donec ac diam a ipsum accumsan aliquet non quis orci. Etiam in sapien non erat dapibus rhoncus porta at lorem. Suspendisse est urna, egestas ut purus quis, facilisis porta tellus. Pellentesque luctus dolor ut quam luctus, nec porttitor risus dictum. Aliquam sed arcu vehicula, tempor velit consectetur, feugiat mauris. Sed non pellentesque quam. Integer in tempus enim.</p>
+                    <h2><?php echo $prod['name']; ?></h2>
+                    <h3><?php echo $prod['category_name'];?></h3>
+                    <p><?php echo $prod['description']; ?></p>
 
-                    <p class="price">Current bid: £123.45</p>
-                    <a href="#" class="more">More &gt;&gt;</a>
+                    <p class="price">Current bid: £<?php echo $prod['current_bird_price'];?></p>
+                    <a href="<?php echo URL_WEB . "product/detail?id=".$prod['id']?>" class="more">More &gt;&gt;</a>
                 </article>
-            </li>
-            <li>
-                <img src="<?php echo URL_WEB?>public/images/product.png" alt="product name">
-                <article>
-                    <h2>Product name</h2>
-                    <h3>Product category</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sodales ornare purus, non laoreet dolor sagittis id. Vestibulum lobortis laoreet nibh, eu luctus purus volutpat sit amet. Proin nec iaculis nulla. Vivamus nec tempus quam, sed dapibus massa. Etiam metus nunc, cursus vitae ex nec, scelerisque dapibus eros. Donec ac diam a ipsum accumsan aliquet non quis orci. Etiam in sapien non erat dapibus rhoncus porta at lorem. Suspendisse est urna, egestas ut purus quis, facilisis porta tellus. Pellentesque luctus dolor ut quam luctus, nec porttitor risus dictum. Aliquam sed arcu vehicula, tempor velit consectetur, feugiat mauris. Sed non pellentesque quam. Integer in tempus enim.</p>
-
-                    <p class="price">Current bid: £123.45</p>
-                    <a href="#" class="more">More &gt;&gt;</a>
-                </article>
-            </li>
-            <li>
-                <img src="<?php echo URL_WEB?>public/images/product.png" alt="product name">
-                <article>
-                    <h2>Product name</h2>
-                    <h3>Product category</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sodales ornare purus, non laoreet dolor sagittis id. Vestibulum lobortis laoreet nibh, eu luctus purus volutpat sit amet. Proin nec iaculis nulla. Vivamus nec tempus quam, sed dapibus massa. Etiam metus nunc, cursus vitae ex nec, scelerisque dapibus eros. Donec ac diam a ipsum accumsan aliquet non quis orci. Etiam in sapien non erat dapibus rhoncus porta at lorem. Suspendisse est urna, egestas ut purus quis, facilisis porta tellus. Pellentesque luctus dolor ut quam luctus, nec porttitor risus dictum. Aliquam sed arcu vehicula, tempor velit consectetur, feugiat mauris. Sed non pellentesque quam. Integer in tempus enim.</p>
-
-                    <p class="price">Current bid: £123.45</p>
-                    <a href="#" class="more">More &gt;&gt;</a>
-                </article>
-            </li>
+            </li> 
+        <?php }?>
+           
         </ul>
 
         <hr />

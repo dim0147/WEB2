@@ -10,7 +10,8 @@ class home extends Controller{
 
     public function index(){
         $category = $this->model->getCate();
-        $this->render(__DIR__ . '/../view/home.php', ['category' => $category, 'title' => 'ibuy Auctions']);
+        $product = $this->model->getProduct();
+        $this->render(__DIR__ . '/../view/home.php', ['category' => $category, 'products' => $product, 'title' => 'ibuy Auctions']);
     }
 
     public function search(){
