@@ -453,5 +453,9 @@ class User_model extends Database{
         }
     }
 
+    public function getLastInderId(){
+        return $this->pdo->lastInsertId();
+    }
+
 
 }

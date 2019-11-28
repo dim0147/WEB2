@@ -9,8 +9,8 @@
         public function login(){
             // Login already
             if(!empty($_SESSION['username'])){
-                header('Location: ' . URL_WEB);
-                exit();
+                echo "You login already!";
+                goOldUrl();
             }
             $this->render(__DIR__ . '/../view/login.php', ['title' => 'Login Admin'], TRUE, FALSE, FALSE);
         }
@@ -18,20 +18,20 @@
         public function postLogin(){
             //  Check if not empty
             if(empty($_POST['username']) || empty(['password']) || !empty($_SESSION['username'])){
-                setHTTPCode(406);
-                exit();
+                echo "Have some missing field!";
+                goAdminLogin();
             }
             //  Check if user exist
             $user = $this->model->checkAdminExist($_POST['username']);
             if(!$user){
                 setHTTPCode(401, "Wrong username or password!");
-                exit();
+                goAdminLogin();
             }
             //  Get first user
             $user = $user[0];
             if(!password_verify($_POST['password'], $user['password'])){ //  Login fail
                 setHTTPCode(401, "Wrong username or password!");
-                exit();
+                goAdminLogin();
             }
             //  Login success
             $_SESSION['username'] =  $user['username'];
@@ -47,19 +47,25 @@
 
         public function postRegister(){
             if(!empty($_SESSION['username']) || empty($_POST['name']) || empty($_POST['username']) || empty(['password'])){
-                setHTTPCode(406);
-                exit();
+                setHTTPCode(406, "Missing some field!");
+                goAdminLogin();
             }
             $checkExist = $this->model->checkAdminExist($_POST['username']);
             if ($checkExist){
                 setHTTPCode(401, 'Admin have exist!');
-                exit();
+                goAdminLogin();
             }
             $createAdmin = $this->model->createAdmin($_POST['username'], $_POST['password'], $_POST['name']);
-            if($createAdmin)
+            if($createAdmin){
+                $_SESSION['username'] = $_POST['username'];
+                $_SESSION['name'] = $_POST['name'];
                 setHTTPCode(201, 'Create new admin success!!');
-            else
+                goOldUrl();
+            }
+            else{
                 setHTTPCode(406, 'Failed create new admin!');
+                goOldUrl();
+            }
         }
 
         public function addCate(){
@@ -71,8 +77,8 @@
         public function postAddCate(){
             $this->Authenticate();
             if(empty($_POST['name'])){
-                setHTTPCode(400);
-                exit();
+                setHTTPCode(400, "Missing field!");
+                goUrl("admin/addCate");
             }
             $checkExist = $this->model->checkCateExist($_POST['name']);
             if($checkExist){
@@ -179,12 +185,12 @@
                 //  If not found or result more than 1
             if(!$getAdmin || count($getAdmin) !== 1){
                 setHTTPCode(404, "You don't have permission to access this site!");
-                exit();
+                goUrl('');
             }
                 //  If not Admin
             if($getAdmin[0]['type'] !== 'admin'){
                 setHTTPCode(404, "You don't have permission to access this site!");
-                exit();
+                goUrl('');
             }
         }
         

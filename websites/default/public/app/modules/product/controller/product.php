@@ -27,18 +27,27 @@
             goUserLogin();
         }
         //  Check if empty field
-        if(empty($_POST['id']) || empty($_POST['amount']))
-            exit("Missing require field!");
+        if(empty($_POST['id']) || empty($_POST['amount'])){
+            echo "Missing require field!";
+            goOldUrl();
+        }
+            
         // Check if invalid amount
-        if(!is_numeric($_POST['amount']) || (float)$_POST['amount'] <= 0)
-            exit("Please insert valid amount!");
+        if(!is_numeric($_POST['amount']) || (float)$_POST['amount'] <= 0.00){
+            echo "Please insert valid amount!";
+            goOldUrl();
+        }
+            
         //  Check product, return information about product
         $product = $this->model->checkProductExist($_POST['id']);
-        if(!$product)
-            exit("Not found product!");
+        if(!$product){
+           echo "Not found product!";
+           goOldUrl();
+        }
         //  Check if end_Date smaller than current time
         if(strtotime($product[0]['end_at']) <= time()){
-            exit("This auction is finish! You cannot place bird!");
+            echo "This auction is finish! You cannot place bird!";
+            goOldUrl();
         }
         //  Get id, current_bird, bird max, bird minimum, the owner of product
         $idProd = $product[0]['id'];
@@ -54,28 +63,41 @@
         $this->model->createProductBird($idProd, (float)$_POST['amount'], $userID);
         $this->model->updateBirdPriceProd($idProd, (float)$_POST['amount']);
         setHTTPCode(200, "Place your bid success!");
-        exit;
+        goOldUrl();
     }
 
     public function checkRequireBird($current_bird, $bird_max, $bird_minimum, $own_product){
-        if((int)$bird_max !== 0 && ((float)$_POST['amount'] >= (float)$bird_max))
-            exit("You bird more than accept! Please consider lower! So weird!");
-        if((int)$bird_minimum !== 0 && ((float)$_POST['amount'] <= (float)$bird_minimum))
-            exit("That's a little small, please bird more than £" . $bird_minimum . "!");
-        if(!empty($current_bird) && ((float)$_POST['amount'] <= (float)$current_bird))
-            exit("You need to place higher than £" . $current_bird. "!");
+        if((float)$bird_max !== 0.00 && ((float)$_POST['amount'] >= (float)$bird_max)){
+            echo "You bird more than accept! Please consider lower! So weird!";
+            goOldUrl();
+        }
+            
+        if((float)$bird_minimum !== 0.00 && ((float)$_POST['amount'] <= (float)$bird_minimum)){
+            echo "That's a little small, please bird more than £" . $bird_minimum . "!";
+            goOldUrl();
+        }
+            
+        if(!empty($current_bird) && ((float)$_POST['amount'] <= (float)$current_bird)){
+            echo "You need to place higher than £" . $current_bird. "!";
+            goOldUrl();
+        }
+            
     }
 
     public function checkUserValid($own_product){
         //  Get user
         $user = $this->model->getUserByUsrName($_SESSION['username']);
-        if(!$user)  //  If not found
-            exit("Unauthorized, Please logout!");
+        if(!$user){  //  If not found
+            echo "Unauthorized, Please logout!";
+            goOldUrl();
+        }
         // Get ID of user 
         $userID = $user[0]['id']; 
         // If user is the own of product
-        if($userID == $own_product) 
-            exit("You can't place bid on your product!");
+        if($userID == $own_product){
+            echo "You can't place bid on your product!";
+            goOldUrl();
+        }
         return $userID;
     }
 
@@ -94,20 +116,33 @@
     }
 
     public function postReview(){
-        if(empty($_POST['id']) || empty($_POST['review_text']))
-            exit("Missing field!");
-        if(empty($_SESSION['username']))
-            exit("Unauthorized!");
+        if(empty($_POST['id']) || empty($_POST['review_text'])){
+            echo "Missing field!";
+            goOldUrl();
+        }
+            
+        if(empty($_SESSION['username'])){
+            echo "You need login first!!";
+            goUserLogin();
+        }
+            
         $checkProd = $this->model->checkProductExist($_POST['id']);
-        if(!$checkProd)
-            exit("Product not exist!");
+        if(!$checkProd){
+            echo "Product not exist!";
+            goOldUrl();
+        }
+            
         
         $getUser = $this->model->getUserByUsrName($_SESSION['username']);
-        if(!$getUser)
-            exit("Unauthorized!");
+        if(!$getUser){
+            echo "Unauthorized!, please logout and login again";
+            goOldUrl();
+        }
+            
         $userID = $getUser[0]['id'];
         $this->model->createReview($_POST['id'], $userID, $_POST['review_text']);
         echo "Create successful!";
+        goOldUrl();
     }
 
  }

@@ -42,7 +42,6 @@ class user extends Controller{
         }
         $_SESSION['username'] =  $user['username'];
         $_SESSION['name'] =  $user['name'];
-        $_SESSION['id'] =  $user['id'];
         setHTTPCode(200, "Login success");
         goOldUrl();
     }
@@ -70,7 +69,6 @@ class user extends Controller{
         }
         $_SESSION['username'] =  $_POST['username'];
         $_SESSION['name'] =  $_POST['name'];
-        $_SESSION['id'] =  $this->model->pdo->lastInsertId();
         setHTTPCode(201, "Create user " . $_POST['username'] . " success!");
         goOldUrl();
     }
@@ -78,7 +76,7 @@ class user extends Controller{
     public function logout(){
         session_destroy();
         echo "Log out success!";
-        goOldUrl();
+        goUrl('');
     }
 
     public function addAuction(){
@@ -116,7 +114,7 @@ class user extends Controller{
         $user = $this->model->getUsrByUsrName($_SESSION['username']);
         if(!$user || count($user) !== 1){   //  If not found or result > 1
             setHTTPCode(400, "Error while Authenticate, please logout and login again!");
-            exit;
+            goOldUrl();
         }   
         //  Get user ID
         $userID = $user[0]['id'];
@@ -203,7 +201,7 @@ class user extends Controller{
     public function postEditAuction(){
         $this->checkPostEditRequest();
         if(empty($_SESSION['username'])){
-            exit("Require login!");
+            echo "Require login!";
             goUserLogin();
         }
         $this->validPrice();
@@ -289,16 +287,20 @@ class user extends Controller{
         //  Check if is number and not equal or small than 0
         if((!empty($_POST['maximum_price']) && (!is_numeric($_POST['maximum_price']) || (float)$_POST['maximum_price'] < 0.00 )) || 
            (!empty($_POST['minimum_price']) && (!is_numeric($_POST['minimum_price']) || (float)$_POST['minimum_price'] < 0.00 )) ||
-           (!empty($_POST['hot_price']) && (!is_numeric($_POST['hot_price']) || (float)$_POST['hot_price'] < 0.00 )))
-            exit("Please enter a valid Number!");
+           (!empty($_POST['hot_price']) && (!is_numeric($_POST['hot_price']) || (float)$_POST['hot_price'] < 0.00 ))){
+            echo "Please enter a valid Number!";
+            goOldUrl();
+            }
 
         //  Check if not empty minimum price and maximum price
         if(!empty($_POST['minimum_price']) && !empty($_POST['maximum_price'])  && (float)$_POST['maximum_price'] !== 0.00){
             //  Convert to float
             $minimum = (float)$_POST['minimum_price'];
             $maximum = (float)$_POST['maximum_price'];
-            if($minimum >= $maximum)    //  If minimum bigger than maximum price
-                exit("Maximum price not valid!");
+            if($minimum >= $maximum){    //  If minimum bigger than maximum price
+                echo "Maximum price not valid!";
+                goOldUrl();
+            }
         }
 
         //  Check if not empty minimum price and hot price
@@ -307,7 +309,8 @@ class user extends Controller{
             $minimum = (float)$_POST['minimum_price'];
             $hot = (float)$_POST['hot_price'];
             if($minimum >= $hot)    //  If minimum bigger than maximum price
-                exit("Hot price not valid!");
+                echo "Hot price not valid!";
+                goOldUrl();
         }
 
     }
@@ -366,14 +369,16 @@ class user extends Controller{
         if(empty($_POST['name']) || !isset($_POST['id'])|| empty($_POST['description']) || !isset($_POST['minimum_price'])
           || !isset($_POST['maximum_price']) || !isset($_POST['hot_price']) || empty($_POST['end_date'])
           || empty($_POST['status']) || empty($_POST['category']) || !is_array($_POST['category'])
-          || !isset($_FILES['header']) || !isset($_FILES['thumbnail']))
-            exit("Field error!");
+          || !isset($_FILES['header']) || !isset($_FILES['thumbnail'])){
+            echo "Field error!";
+            goOldUrl();
+          }
     }
 
     public function Authenticate(){
         if(!empty($_SESSION['username'])){
             setHTTPCode(401, "You Login Already!");
-            exit();
+            goOldUrl();
         }
     }
 }

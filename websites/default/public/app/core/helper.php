@@ -171,7 +171,7 @@ function printB($arr){
 			exit;
 		}
 			$old_url = $_SESSION['old_url'];
-			echo ("<br>You will be redirect after 3 seconds!<br> <a href=". URL_WEB . $old_url . ">Not redirect?Click here for redirect!</a>");
+			echo ("<br>You will be redirect after 3 seconds!<br> <a href=". $old_url . ">Not redirect?Click here for redirect!</a>");
 			header("Refresh:3; url=" . $old_url);
 			$_SESSION['old_url'] = NULL;
 			exit;
