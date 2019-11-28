@@ -12,7 +12,7 @@
                 header('Location: ' . URL_WEB);
                 exit();
             }
-            $this->render(__DIR__ . '/../view/login.php', ['title' => 'Login Admin'], true, false, false);
+            $this->render(__DIR__ . '/../view/login.php', ['title' => 'Login Admin'], TRUE, FALSE, FALSE);
         }
 
         public function postLogin(){
@@ -36,15 +36,13 @@
             //  Login success
             $_SESSION['username'] =  $user['username'];
             $_SESSION['name'] =  $user['name'];
-                setHTTPCode(200, "Login success!");
-                exit();
-
-                
+            setHTTPCode(200, "Login success!");
+            goOldUrl();
         }
 
         public function register(){
             // Login already
-            $this->render(__DIR__ . '/../view/register.php', ['title' => 'Register Admin'], TRUE, FALSE);
+            $this->render(__DIR__ . '/../view/register.php', ['title' => 'Register Admin'], TRUE, FALSE, FALSE);
         }
 
         public function postRegister(){
@@ -65,6 +63,7 @@
         }
 
         public function addCate(){
+            $_SESSION['old_url'] = getCurrentURL();
             $this->Authenticate();
             $this->render(__DIR__ . '/../view/add-category.php', ['title' => 'Add Category'], TRUE, FALSE);
         }
@@ -78,16 +77,21 @@
             $checkExist = $this->model->checkCateExist($_POST['name']);
             if($checkExist){
                 setHTTPCode(406, "Category already exist!");
-                exit();
+                goUrl("admin/addCate");
             }
             $createCate = $this->model->addCate($_POST['name']);
-            if($createCate)
+            if($createCate){
                 setHTTPCode(200, "Create new category successful!");
-            else
+                goUrl("admin/addCate");
+            }
+            else{
                 setHTTPCode(406, "Error while create new category!");
+                goUrl("admin/addCate");
+            }
         }
 
         public function editCate(){
+            $_SESSION['old_url'] = getCurrentURL();
             $this->Authenticate();
             if(empty($_GET['name'])){
                 setHTTPCode(400);
@@ -106,25 +110,30 @@
             $this->Authenticate();
             if(empty($_POST['name']) || empty($_POST['oldName'])){
                 setHTTPCode(400, "Empty field!");
-                exit();
+                goOldUrl();
             }
             if($_POST['name'] == $_POST['oldName']){
                 setHTTPCode(400, "Same value");
-                exit();
+                goOldUrl();
             }
             $checkExist = $this->model->checkCateExist($_POST['oldName']);
             if(!$checkExist){
                 setHTTPCode(406, "Not found category");
-                exit();
+                goOldUrl();
             }
             $editCate = $this->model->editCate($_POST['oldName'], $_POST['name']);
-            if($editCate)
+            if($editCate){
                 setHTTPCode(200, "Edit category successful!");
-            else
+                goUrl("admin/dashboard");
+            }
+            else{
                 setHTTPCode(400, "Error while edit category");
+                goOldUrl();
+            }
         }
 
         public function removeCate(){
+            $_SESSION['old_url'] = getCurrentURL();
             $this->Authenticate();
             if(empty($_GET['name'])){
                 setHTTPCode(400);
@@ -143,24 +152,28 @@
             $this->Authenticate();
             if(empty($_POST['name'])){
                 setHTTPCode(400, "Empty name!");
-                exit();
+                goOldUrl();
             }
             $checkExist = $this->model->checkCateExist($_POST['name']);
             if(!$checkExist){
                 setHTTPCode(400, "Not found category to remove!");
-                exit();
+                goOldUrl();
             }
             $delCate = $this->model->removeCate($_POST['name']);
-            if($delCate)
+            if($delCate){
                 setHTTPCode(200, 'Delete success!');
-            else
+                goUrl('admin/dashboard');
+            }
+            else{
                 setHTTPCode('Fail while delete category!');
+                goOldUrl();
+            }
         }
 
         public function Authenticate(){
             if(empty($_SESSION['username'])){
-                setHTTPCode(404, "You don't have permission to access this site!");
-                exit();
+                setHTTPCode(404, "You need login first!");
+                goAdminLogin();
             }
             $getAdmin = $this->model->checkAdminExist($_SESSION['username']);
                 //  If not found or result more than 1
@@ -174,4 +187,5 @@
                 exit();
             }
         }
+        
     }

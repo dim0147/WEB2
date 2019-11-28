@@ -1,6 +1,9 @@
 [js]
 <script src="<?php echo URL_WEB . "public/js/product_detail.js" ?>"></script>
 [/js]
+[css]
+<link rel="stylesheet" href="<?php echo URL_WEB?>public/css/ibuy.css" />
+[/css]
     <h1>Product Page</h1>
     <article class="product">
 

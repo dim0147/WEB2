@@ -16,14 +16,16 @@
         $product = $this->model->getProductById($_GET['id']);
         if(!$product)
             exit("Cannot find product!");
-
+        $_SESSION['old_url'] = getCurrentURL();
         $this->render(__DIR__ . '/../view/detail.php', ['title' => "Product detail", 'product' => $product, 'category' => $category]);
     }
 
     public function postPlaceBid(){
         //  Check if user login
-        if(empty($_SESSION['username']))
-            exit("You have to login first!");
+        if(empty($_SESSION['username'])){
+            echo "You have to login first!";
+            goUserLogin();
+        }
         //  Check if empty field
         if(empty($_POST['id']) || empty($_POST['amount']))
             exit("Missing require field!");

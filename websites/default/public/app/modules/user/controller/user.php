@@ -10,78 +10,88 @@ class user extends Controller{
 
     public function login(){
         $this->Authenticate();
-        $this->render(__DIR__ . "/../view/login.php", ["title" => "User Login"], TRUE, FALSE);
+        $this->render(__DIR__ . "/../view/login.php", ["title" => "User Login"], TRUE, FALSE, FALSE);
     }
 
     public function postLogin(){
         $this->Authenticate();
         if(empty($_POST['username']) || empty($_POST['password'])){
             setHTTPCode(400, "Empty field!");
-            exit;
+            goUrl("user/login");
         }
         $checkUsr = $this->model->getUsrByUsrName($_POST['username']);
         if(!$checkUsr){
             setHTTPCode(400, "Wrong username or password!");
-            exit;
+            goUrl("user/login");
         }
         //  Means has 2 user or don't have any user
         if(count($checkUsr) > 1 || count($checkUsr) !== 1){
             setHTTPCode(400, "Wrong username or password!");
-            exit;
+            goUrl("user/login");
         }
         $user = $checkUsr[0];
         //  Means that is admin
         if($user['type'] == "admin"){
             setHTTPCode(400, "Wrong username or password!");
-            exit;
+            goUrl("user/login");
         }
         //  if Wrong password
         if(!password_verify($_POST['password'], $user['password'])){
             setHTTPCode(400, "Wrong username or password!");
-            exit;
+            goUrl("user/login");
         }
         $_SESSION['username'] =  $user['username'];
         $_SESSION['name'] =  $user['name'];
+        $_SESSION['id'] =  $user['id'];
         setHTTPCode(200, "Login success");
-        exit;
+        goOldUrl();
     }
 
     public function register(){
         $this->Authenticate();
-        $this->render(__DIR__ . "/../view/register.php", ["title" => "User Register"], TRUE, FALSE);
+        $this->render(__DIR__ . "/../view/register.php", ["title" => "User Register"], TRUE, FALSE, FALSE);
     }
 
     public function postRegister(){
         $this->Authenticate();
         if(empty($_POST['username']) || empty($_POST['password']) || empty($_POST['name'])){
             setHTTPCode(400, "Empty field!");
-            exit;
+            goUrl("user/register");
         }
         $checkUsr = $this->model->getUsrByUsrName($_POST['username']);
         if($checkUsr){
             setHTTPCode(400, "User exist!");
-            exit;
+            goUrl("user/register");
         }
         $createUsr = $this->model->createNewUsr($_POST['username'], $_POST['password'], $_POST['name']);
         if($createUsr === FALSE){
             setHTTPCode(400, "Error while register! Please try again!");
-            exit;
+            goUrl("user/register");
         }
         $_SESSION['username'] =  $_POST['username'];
         $_SESSION['name'] =  $_POST['name'];
+        $_SESSION['id'] =  $this->model->pdo->lastInsertId();
         setHTTPCode(201, "Create user " . $_POST['username'] . " success!");
-        exit;
+        goOldUrl();
+    }
+
+    public function logout(){
+        session_destroy();
+        echo "Log out success!";
+        goOldUrl();
     }
 
     public function addAuction(){
+        $_SESSION['old_url'] = getCurrentURL();
         if(empty($_SESSION['username'])){
             setHTTPCode(401, "Require login!");
-            exit;
+            goUserLogin();
         }
 
         $category = $this->model->getCate();
         if(!$category){
-            exit("Please goto admin page to add at least 1 category to continue!");
+            echo "Please goto admin page to add at least 1 category to continue!";
+            goUrl('admin/addCate');
         }
         $this->render(__DIR__ . "/../view/add_auction.php", ["category" => $category, "title" => "Add New Auction"], TRUE, FALSE);
     }
@@ -89,18 +99,18 @@ class user extends Controller{
     public function postAddAuction(){
         if(empty($_SESSION['username'])){
             setHTTPCode(401, "Require login!");
-            exit;
+            goUrl('user/addAuction');
         }
         // Check if empty or not have necessary field avoid error
         if(!$this->checkPostAddRequest()){
             setHTTPCode(400, "Field Error!");
-            exit;
+            goUrl('user/addAuction');
         }
         $this->validPrice();
         //  Check if end_Date smaller than current time
         if(strtotime($_POST['end_date']) <= time()){
             setHTTPCode(400, "End date smaller than current date!!");
-            exit;
+            goUrl('user/addAuction');
         }
         //  Get user
         $user = $this->model->getUsrByUsrName($_SESSION['username']);
@@ -115,7 +125,7 @@ class user extends Controller{
         $nameHeaderImg = $this->uploadLocalHeader();
         if(!$nameHeaderImg){    //  If fail
             setHTTPCode(500, "Error while upload header image to local!");
-            exit;
+            goUrl('user/addAuction');
         }
 
         //  Create new auction
@@ -127,7 +137,7 @@ class user extends Controller{
             $listThumbnail = $this->uploadLocalThumb();
             if($listThumbnail === FALSE){   // If fail
                 setHTTPCode(400, "Error while upload thumbnail to local storage!");
-                exit;
+                goUrl('user/addAuction');
             }
             //  Upload to database
             $this->model->uploadThumbnailAuction($listThumbnail, $idProd);
@@ -138,33 +148,35 @@ class user extends Controller{
             $this->model->createCategoryProduct($_POST['category'], $idProd);
         }
         setHTTPCode(200, "Create success!");
-        exit;
+        goUrl('user/addAuction');
     }
 
     public function postRemoveAuction(){
         if(empty($_POST['id'])){
             setHTTPCode(400);
-            exit;
+            goOldUrl();
         }
         if(empty($_SESSION['username'])){
             setHTTPCode(404, "Unauthorized!");
-            exit;
+            goOldUrl();
         }
         $getProduct = $this->model->getAuctionById($_POST['id']);
         if(!$getProduct){
             setHTTPCode(404);
-            exit;
+            goOldUrl();
         }
         $own_product = $getProduct['username'];
         if($own_product != $_SESSION['username']){
             setHTTPCode(404, "You are not the owner of this product!");
-            exit;
+            goOldUrl();
         }
         $this->model->removeAuction($getProduct);
         setHTTPCode(200, "Remove success!");
+        goOldUrl();
     }
 
     public function editAuction(){
+        $_SESSION['old_url'] = getCurrentURL();
         if(empty($_GET['id']))
             exit("Missing field!");
         if(empty($_SESSION['username']))
@@ -190,22 +202,28 @@ class user extends Controller{
 
     public function postEditAuction(){
         $this->checkPostEditRequest();
-        if(empty($_SESSION['username']))
+        if(empty($_SESSION['username'])){
             exit("Require login!");
+            goUserLogin();
+        }
         $this->validPrice();
         //  Check if end_Date smaller than current time
         if(strtotime($_POST['end_date']) <= time()){
             setHTTPCode(400, "End date smaller than current date!!");
-            exit;
+            goOldUrl();
         }
         //  Get product And user
         $product = $this->model->getProductWithUsr($_POST['id']);
-        if(!$product)
-            exit("Not found product!");
+        if(!$product){
+            echo "Not found product!";
+            goOldUrl();
+        }
         $own_product = $product['username'];
         //  Check if not owner of product
-        if($own_product != $_SESSION['username'])
-            exit("You are not the owner of this auction!");
+        if($own_product != $_SESSION['username']){
+            echo "You are not the owner of this auction!";
+            goOldUrl();
+        }
         //  Upload header
         $nameHeader = $this->uploadLocalHeader();
         $updateData = [
@@ -227,8 +245,10 @@ class user extends Controller{
         if(!empty($_FILES['thumbnail']['name'][0])){
             // Upload thumbnail image to local storage
             $listThumbnail = $this->uploadLocalThumb();
-            if($listThumbnail === FALSE)  // If fail
-               exit("Error while upload thumbnail to local storage!");
+            if($listThumbnail === FALSE){  // If fail
+               echo "Error while upload thumbnail to local storage!";
+               goOldUrl();
+            }
             //  Upload to database
             $this->model->uploadThumbnailAuction($listThumbnail, $_POST['id']);
         }
@@ -238,8 +258,10 @@ class user extends Controller{
             $arrDeleteThumb = json_decode($_POST['thumbnail_delete']);
             //  Get list name of thumb to delete
             $listNameThumb = $this->model->getThumbnailAuction($arrDeleteThumb, $_POST['id']);
-            if(!$listNameThumb) //  If fail
-                exit("Invalid thumbnail to delete!");
+            if(!$listNameThumb){ //  If fail
+                echo "Invalid thumbnail to delete!";
+                goOldUrl();
+            }
             $this->model->deleteThumbnailAuction($arrDeleteThumb, $_POST['id']);
             //  Delete on local storage
             foreach($listNameThumb as $name){

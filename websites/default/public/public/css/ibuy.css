@@ -195,3 +195,60 @@ main form label, main form input {
 
 }
 
+
+
+
+.navigation-bar ul {
+	background: rgb(38, 40, 41);
+	list-style-type: none;
+	text-align: center;
+  }
+  .navigation-bar li {
+	line-height: 50px;	
+	color: white !important;
+	display: inline-block;
+	width: 140px;
+	height: 50px;
+	cursor:pointer;
+	position: relative;
+	cursor: pointer;
+  }
+  .navigation-bar li:hover{
+	cursor: pointer;
+	background: rgb(29, 127, 156);
+  }
+
+  .navigation-bar li:hover .menu-child {
+	cursor: pointer;
+	display: block;
+  }
+
+  .navigation-bar a {
+	text-decoration: none;
+	color: white !important;
+	display: block;
+	cursor:pointer;
+  }
+  .navigation-bar a:hover {
+	background: rgb(18, 186, 216) !important;	
+	color: #333;
+	cursor: pointer;
+  }
+  
+  .menu-child {
+	display: none;
+	position: absolute;
+	cursor: pointer;
+  }
+
+
+
+  .navigation-bar li .menu-child:hover {
+	cursor: pointer;
+	display: block;
+  }
+  .menu-child li {
+	cursor: pointer;
+	margin-left: 0 !important;
+  }
+  

@@ -147,3 +147,38 @@ function printB($arr){
 		}
 		return FALSE;
 	}
+
+	function getCurrentURL(){
+		return "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	}
+
+	function goUserLogin(){
+		echo ("<br>You will be redirect to user login after 3 seconds!<br> <a href=". URL_WEB ."user/login>Not redirect?Click here for redirect!</a>");
+		header("Refresh:3; url=" . URL_WEB . "user/login");
+		exit;
+	}
+
+	function goAdminLogin(){
+		echo ("<br>You will be redirect to admin login after 3 seconds!<br> <a href=". URL_WEB ."admin/login>Not redirect?Click here for redirect!</a>");
+		header("Refresh:3; url=" . URL_WEB . "admin/login");
+		exit;
+	}
+
+	function goOldUrl(){
+		if(empty($_SESSION['old_url'])){
+			echo ("<br>You will be redirect to home page after 3 seconds!<br> <a href=". URL_WEB .">Not redirect?Click here for redirect!</a>");
+			header("Refresh:3; url=" . URL_WEB);
+			exit;
+		}
+			$old_url = $_SESSION['old_url'];
+			echo ("<br>You will be redirect after 3 seconds!<br> <a href=". URL_WEB . $old_url . ">Not redirect?Click here for redirect!</a>");
+			header("Refresh:3; url=" . $old_url);
+			$_SESSION['old_url'] = NULL;
+			exit;
+	}
+
+	function goUrl($url){
+		echo ("<br>You will be redirect after 3 seconds!<br> <a href=". URL_WEB . $url .">Not redirect?Click here for redirect!</a>");
+		header("Refresh:3; url=" . URL_WEB . $url);
+		exit;
+	}

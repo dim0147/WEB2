@@ -1,4 +1,6 @@
-
+[css]
+<link rel="stylesheet" href="<?php echo URL_WEB?>public/css/ibuy.css" />
+[/css]
     <img src="<?php echo URL_WEB?>public/randombanner.php" alt="Banner" />
 
     <main>
