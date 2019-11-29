@@ -33,6 +33,85 @@ class User_model extends Database{
         }
     }
 
+    public function updateProfileUser($name, $username){
+        try{
+            $sql = "UPDATE user SET name=:name WHERE username=:username";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":name", $name);
+            $stmt->bindValue(":username", $username);
+            $stmt->execute();
+        }
+        catch(PDOException $err){
+            die($err);
+        }
+    }
+
+    public function updateUserPassword($password, $username){
+        try{
+            $password = password_hash($password, PASSWORD_DEFAULT);
+            $sql = "UPDATE user SET password=:password WHERE username=:username";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":password", $password);
+            $stmt->bindValue(":username", $username);
+            $stmt->execute();
+        }
+        catch(PDOException $err){
+            die($err);
+        }
+    }
+
+    public function getBirdUserById($id){
+        try{
+            $sql = "SELECT p.current_bird_price, p.image, p.name, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.status,
+                    pt.product_id, pt.price AS user_price, pt.created_at AS time_bird,
+                    GROUP_CONCAT(c.name SEPARATOR ', ') AS product_category
+                    FROM product_bird pt
+                    INNER JOIN product p ON p.id = pt.product_id
+                    LEFT JOIN product_category pc ON pc.product_id = p.id
+                    LEFT JOIN category c ON c.id = pc.category_id
+                    WHERE pt.user_id =:id
+                    GROUP BY p.id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":id", $id);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if(!$result)
+                return NULL;
+            $result = $this->editPriceTimeAuction($result);
+            if(!$result)
+                return NULL;
+            return $result;
+        }
+        catch(PDOException $err){
+            die($err);
+        }
+    }
+    
+    public function getAuctionUserById($id){
+        try{
+            $sql = "SELECT p.id, p.current_bird_price, p.image, p.name, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.status,
+                    GROUP_CONCAT(c.name SEPARATOR ', ') AS product_category
+                    FROM product p
+                    LEFT JOIN product_category pc ON pc.product_id = p.id
+                    LEFT JOIN category c ON c.id = pc.category_id
+                    WHERE p.user_id =:id
+                    GROUP BY p.id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":id", $id);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if(!$result)
+                return NULL;
+            $result = $this->editPriceTimeAuction($result);
+            if(!$result)
+                return NULL;
+            return $result;
+        }
+        catch(PDOException $err){
+            die($err);
+        }
+    }
+
     public function createNewAuction($name, $description, $image, $maxPrice = NULL, $minPrice = NULL, $hotPrice = NULL, $endDate, $status, $userID){
         try{
             $sql = "INSERT INTO
@@ -457,5 +536,21 @@ class User_model extends Database{
         return $this->pdo->lastInsertId();
     }
 
+    public function editPriceTimeAuction($arrBird){
+        if(!is_array($arrBird))
+            return FALSE;
+        foreach($arrBird as $key => $bird){
+            $arrBird[$key]['elapsed_time'] = calculateTime($bird['created_at'], $bird['end_at']);
+            if((float)$bird['bird_max_price'] == 0.00)
+                $arrBird[$key]['bird_max_price'] = 'No';
+            if((float)$bird['bird_minimum_price'] == 0.00)
+                $arrBird[$key]['bird_minimum_price'] = 'No';
+            if((float)$bird['hot_price'] == 0.00)
+                $arrBird[$key]['hot_price'] = 'No';
+            if(empty($bird['current_bird_price']))
+                $arrBird[$key]['current_bird_price'] = 0;
+        }
+        return $arrBird;
+    }
 
 }

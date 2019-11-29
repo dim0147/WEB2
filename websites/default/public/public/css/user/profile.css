@@ -1,0 +1,161 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.container{
+    padding: 10px;
+    text-align: center;
+}
+
+.profile{
+    text-align: left;
+    border: 3px solid rgb(198, 236, 27);
+    box-shadow: 0 0 8px 0;
+    background: rgb(154, 154, 168);
+    width: 90%;
+    display: inline-block;
+}
+
+.title{
+    text-align: center;
+    color: rgb(0, 255, 13);
+    font-weight: bold;
+}
+
+.field{
+    text-align: left;
+    padding: 30px; 
+    
+}
+
+.field_t{
+    display:inline-block;
+    width: 30%;
+    font-weight: bold;
+}
+
+.field_v{
+    width: 50%;    
+}
+
+.update{
+    width: 120px;
+    height: 35px;
+    color: #fff !important;
+    background-color: #03b4f5;
+    line-height: 35px;
+    text-align: center;
+    border-radius: 3px;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+    border: none;
+    margin-bottom: 30px;
+    text-decoration: none;
+}
+
+
+.update:hover{
+    background-color: #8ecae0;
+    text-decoration: none;
+}
+
+/* BIRD */
+
+.bird{
+    margin: 20px;
+    text-align: left;
+    border: 3px solid rgb(27, 152, 236);
+    box-shadow: 0 0 8px 0;
+    background: rgb(177, 214, 206);
+    width: 90%;
+    display: inline-block;
+}
+
+.bird_title{
+    color: rgb(36, 99, 216);
+}
+
+.no_bird{
+    text-align: center;
+    font-style: italic;
+    margin: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+
+    padding: 7px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+
+.link_product{
+    text-decoration: none;
+}
+
+.link_product:hover{
+    text-decoration: none;
+}
+
+.tb_field_name{
+    color: rgb(233, 7, 203);
+    font-weight: bold;
+}
+
+.tb_field_name:hover{
+    color: rgb(230, 146, 218);
+    font-weight: bold;
+}
+
+.tb_field_category{
+    color: rgb(233, 97, 7);
+    font-weight: bold;
+}
+
+.tb_field_mini{
+    color: rgb(7, 131, 233);
+    font-weight: bold;
+}
+.tb_field_max{
+    color: rgb(97, 97, 97);
+    font-weight: bold;
+}
+.tb_field_hot{
+    color: rgb(255, 0, 0);
+    font-weight: bold;
+}
+
+.tb_field_bird_current{
+    color: rgb(243, 71, 94);
+    font-weight: bold;
+}
+
+.tb_field_status{
+    color:green;
+    font-weight: bold;
+}
+
+/* auctiom */
+.auction{
+    margin: 20px;
+    text-align: left;
+    border: 3px solid rgb(27, 236, 191);
+    box-shadow: 0 0 8px 0;
+    background: rgb(208, 214, 177);
+    width: 90%;
+    display: inline-block;
+}
+
+.auction_title{
+    color: rgb(248, 144, 7);
+}

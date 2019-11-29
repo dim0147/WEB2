@@ -78,6 +78,108 @@ class user extends Controller{
         echo "Log out success!";
         goUrl('');
     }
+    
+    public function profile(){
+        $_SESSION['old_url'] = getCurrentURL();
+        if(empty($_SESSION['username'])){
+            echo "You need login!";
+            goUserLogin();
+        }
+        $user = $this->model->getUsrByUsrName($_SESSION['username']);
+        if(!$user || count($user) !== 1){
+            echo "Fail while authenticate, please login again !";
+            goUrl("user/logout");
+        }
+        $user = $user[0];
+        $birdUser = $this->model->getBirdUserById($user['id']);
+        $auctionUser = $this->model->getAuctionUserById($user['id']);
+        $this->render(dirname(__DIR__). "/view/profile.php", ['title' => 'User Profile', 'user' => $user, 'birds' => $birdUser, 'auctions' => $auctionUser]);
+    }
+
+    public function updateProfile(){
+        $_SESSION['old_url'] = getCurrentURL();
+        if(empty($_SESSION['username'])){
+            echo "You need login!";
+            goUserLogin();
+        }
+        $user = $this->model->getUsrByUsrName($_SESSION['username']);
+        if(!$user || count($user) !== 1){
+            echo "Fail while authenticate, please login again !";
+            goUrl("user/logout");
+        }
+        $user = $user[0];
+        $this->render(dirname(__DIR__). "/view/update_profile.php", ['title' => 'Change Profile', 'user' => $user]);
+    }
+
+    public function postUpdateProfile(){
+        if(empty($_SESSION['username'])){
+            echo "Please login first!";
+            goUserLogin();
+        }
+        if(empty($_POST['name'])){
+            echo "Missing require field";
+            goOldUrl();
+        }
+        if($_POST['name'] == $_SESSION['name']){
+            echo "Same value!";
+            goOldUrl();
+        }
+        $user = $this->model->getUsrByUsrName($_SESSION['username']);
+        if(!$user || count($user) !== 1){
+            echo "Unauthorized, please login again!";
+            goUrl("user/logout");
+        }
+        $this->model->updateProfileUser($_POST['name'], $_SESSION['username']);
+        $_SESSION['name'] = $_POST['name'];
+        echo "Update successful!";
+        goOldUrl();
+    }
+
+    public function changePassword(){
+        $_SESSION['old_url'] = getCurrentURL();
+        if(empty($_SESSION['username'])){
+            echo "You need login!";
+            goUserLogin();
+        }
+        $user = $this->model->getUsrByUsrName($_SESSION['username']);
+        if(!$user || count($user) !== 1){
+            echo "Fail while authenticate, please login again !";
+            goUrl("user/logout");
+        }
+        $this->render(dirname(__DIR__) . '/view/change_password.php', ['title' => 'Change password']);
+    }
+
+    public function postChangePassword(){
+        if(empty($_POST['old_password']) || empty($_POST['new_password']) || empty($_POST['confirm_password'])){
+            echo "Missing require field!";
+            goOldUrl();
+        }
+        if(empty($_SESSION['username'])){
+            echo "You need login!";
+            goUserLogin();
+        }
+        if($_POST['new_password'] !== $_POST['confirm_password']){
+            echo "Confirm password doesn't math!";
+            goOldUrl();
+        }
+        $user = $this->model->getUsrByUsrName($_SESSION['username']);
+        if(!$user || count($user) !== 1){
+            echo "Unauthorized, please login again!";
+            goUrl("user/logout");
+        }
+        $old_password = $user[0]['password'];
+        if(!password_verify($_POST['old_password'], $old_password)){
+            echo "Incorrect old password!";
+            goOldUrl();
+        }
+        if(password_verify($_POST['new_password'], $old_password)){
+            echo "Same password!";
+            goOldUrl();
+        }
+        $this->model->updateUserPassword($_POST['new_password'], $_SESSION['username']);
+        echo "Update your password success!";
+        goOldUrl();
+    }
 
     public function addAuction(){
         $_SESSION['old_url'] = getCurrentURL();
