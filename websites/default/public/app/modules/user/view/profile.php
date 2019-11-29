@@ -37,6 +37,7 @@
                     <th>Maximum Price</th>
                     <th>Hot Price</th>
                     <th>Current_bird</th>
+                    <th>Your_bid</th>
                     <th>Status</th>
                     <th>Time left</th>
                     <th>Time place bird</th>
@@ -50,6 +51,7 @@
                     <td><p class="tb_field_max"><?php echo $bird['bird_max_price'] ?></p></td>
                     <td><p class="tb_field_hot"><?php echo $bird['hot_price'] ?></p></td>
                     <td><p class="tb_field_bird_current"><?php echo '£' . $bird['current_bird_price'] ?></p></td>
+                    <td><p class="tb_field_bird_user"><?php echo '£' . $bird['user_price'] ?></p></td>
                     <td><p class="tb_field_status"><?php echo $bird['status'] ?></p></td>
                     <td><p><?php echo $bird['elapsed_time'] ?></p></td>
                     <td><p><?php echo $bird['time_bird'] ?></p></td>
@@ -58,12 +60,13 @@
         <?php } ?>
             </table>
             <?php }else{ ?>
-            <p class="no_bird">You don't have place any bird!</p>
+            <p class="no_bird">You don't place any bird!</p>
         <?php } ?>
     </div>
 
     <div class="auction">
         <h1 class="title auction_title">Your Auction</h1>
+        <a href="<?php echo URL_WEB . 'user/addAuction'?>" class="update">Add</a>
         <?php if(!empty($auctions) && is_array($auctions)){ ?>
             <table>
                 <tr>
@@ -76,10 +79,11 @@
                     <th>Current_bird</th>
                     <th>Status</th>
                     <th>Time left</th>
+                    <th>Action</th>
                 </tr>
             <?php foreach($auctions as $auction){ ?>
                 <tr>
-                    <td><a class ="link_product" href="<?php echo URL_WEB . 'user/editAuction?id=' .$auction['id'] ?>"><p class="tb_field_name"><?php echo $auction['name'] ?></p></a></td>
+                    <td><a class ="link_product" href="<?php echo URL_WEB . 'product/detail?id=' .$auction['id'] ?>"><p class="tb_field_name"><?php echo $auction['name'] ?></p></a></td>
                     <td><img src="<?php echo URL_WEB?>/public/images/<?php echo $auction['image']?>" height="42" width="42"></td>
                     <td><p class="tb_field_category"><?php echo $auction['product_category'] ?></p></td>
                     <td><p class="tb_field_mini"><?php echo $auction['bird_minimum_price'] ?></p></td>
@@ -88,11 +92,36 @@
                     <td><p class="tb_field_bird_current"><?php echo '£' . $auction['current_bird_price'] ?></p></td>
                     <td><p class="tb_field_status"><?php echo $auction['status'] ?></p></td>
                     <td><p><?php echo $auction['elapsed_time'] ?></p></td>
+                    <td><a class ="link_product action" href="<?php echo URL_WEB . 'user/editAuction?id='.$auction['id']?>">Edit</a> | <a class ="link_product action" href="<?php echo URL_WEB . 'product/detail?id='.$auction['id']?>">View</a></td>
                 </tr>
         <?php } ?>
             </table>
             <?php }else{ ?>
-            <p class="no_bird">You don't have create any auction!</p>
+            <p class="no_bird">You don't create any auction!</p>
+        <?php } ?>
+    </div>
+
+    <div class="review">
+        <h1 class="title review_title">Your Review</h1>
+        <?php if(!empty($reviews) && is_array($reviews)){ ?>
+            <table>
+                <tr>
+                    <th style="width:50%">Auction Name</th>
+                    <th>Image</th>
+                    <th>Comment</th>
+                    <th>Time</th>
+                </tr>
+            <?php foreach($reviews as $review){ ?>
+                <tr>
+                    <td><a class ="link_product" href="<?php echo URL_WEB . 'product/detail?id=' .$review['product_id'] ?>"><p class="tb_field_name"><?php echo $review['name'] ?></p></a></td>
+                    <td><img src="<?php echo URL_WEB?>/public/images/<?php echo $review['image']?>" height="42" width="42"></td>
+                    <td><p class="tb_field_category"><?php echo $review['comment'] ?></p></td>
+                    <td><p class="tb_field_hot"><?php echo $review['created_at'] ?></p></td>
+                </tr>
+        <?php } ?>
+            </table>
+            <?php }else{ ?>
+            <p class="no_bird">You don't review any auction yet!</p>
         <?php } ?>
     </div>
 

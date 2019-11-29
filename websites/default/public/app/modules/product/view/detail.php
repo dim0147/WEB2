@@ -30,7 +30,9 @@
             if((float)$product['bird_minimum_price'] !== 0.00){
             ?>
                 <p class="price">Minimum bid: £<?php echo $product['bird_minimum_price'] ?></p>
-                <p class="price">*Please bird more than £<?php echo $product['bird_minimum_price'] ?></p>
+                <?php if($product['elapsed_time'] !== FALSE){ ?>
+                    <p class="price">*Please bird more than £<?php echo $product['bird_minimum_price'] ?></p>
+                <?php } ?>
             <?php } ?>
 
             <?php 
@@ -39,12 +41,17 @@
                 <p class="price">Maximum bid: £<?php echo $product['bird_max_price'] ?></p>
             <?php } ?>
             
-            
+            <?php if($product['elapsed_time'] === FALSE){ ?>
+                <h1 style="color:red!important;font-weight:bold;" >This product is end bird!</h1>
+            <?php }else{ ?>
             <time>Time left: <?php echo $product['elapsed_time'] ?></time>
+            <?php } ?>
+            <?php if($product['elapsed_time'] !== FALSE){ ?>
             <form action="<?php echo URL_WEB . "product/postPlaceBid"?>" class="bid" method="POST">
                 <input name="amount" type="number" min="0.00"  placeholder="Enter bid amount" required/>
                 <input name="id" type="hidden" value="<?php echo $product['id']?>"/>
-                <input type="submit" id="placebid" value="Place bid" />
+                    <input type="submit" id="placebid" value="Place bid" />
+                <?php } ?>
             </form>
         </section>
         <section class="description">

@@ -140,6 +140,11 @@ table {
     font-weight: bold;
 }
 
+.tb_field_bird_user{
+    color: rgb(255, 187, 0);
+    font-weight: bold;
+}
+
 .tb_field_status{
     color:green;
     font-weight: bold;
@@ -158,4 +163,23 @@ table {
 
 .auction_title{
     color: rgb(248, 144, 7);
+}
+
+.action:hover{
+    color: rgb(55, 228, 147);
+}
+
+.review{
+    margin: 20px;
+    text-align: left;
+    border: 3px solid rgb(222, 236, 27);
+    box-shadow: 0 0 8px 0;
+    background: rgb(223, 135, 135);
+    width: 90%;
+    display: inline-block;
+}
+
+.review_title{
+    color: #03d9f5;
+    font-weight: bold;
 }

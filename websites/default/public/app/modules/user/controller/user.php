@@ -93,7 +93,8 @@ class user extends Controller{
         $user = $user[0];
         $birdUser = $this->model->getBirdUserById($user['id']);
         $auctionUser = $this->model->getAuctionUserById($user['id']);
-        $this->render(dirname(__DIR__). "/view/profile.php", ['title' => 'User Profile', 'user' => $user, 'birds' => $birdUser, 'auctions' => $auctionUser]);
+        $reviewUser = $this->model->getReviewUserById($user['id']);
+        $this->render(dirname(__DIR__). "/view/profile.php", ['title' => 'User Profile', 'reviews' => $reviewUser, 'user' => $user, 'birds' => $birdUser, 'auctions' => $auctionUser]);
     }
 
     public function updateProfile(){
@@ -193,7 +194,7 @@ class user extends Controller{
             echo "Please goto admin page to add at least 1 category to continue!";
             goUrl('admin/addCate');
         }
-        $this->render(__DIR__ . "/../view/add_auction.php", ["category" => $category, "title" => "Add New Auction"], TRUE, FALSE);
+        $this->render(__DIR__ . "/../view/add_auction.php", ["category" => $category, "title" => "Add New Auction"]);
     }
 
     public function postAddAuction(){
@@ -203,7 +204,7 @@ class user extends Controller{
         }
         // Check if empty or not have necessary field avoid error
         if(!$this->checkPostAddRequest()){
-            setHTTPCode(400, "Field Error!");
+            setHTTPCode(400, "Missing require field!");
             goUrl('user/addAuction');
         }
         $this->validPrice();
@@ -254,25 +255,25 @@ class user extends Controller{
     public function postRemoveAuction(){
         if(empty($_POST['id'])){
             setHTTPCode(400);
-            goOldUrl();
+            exit;
         }
         if(empty($_SESSION['username'])){
             setHTTPCode(404, "Unauthorized!");
-            goOldUrl();
+            exit;
         }
         $getProduct = $this->model->getAuctionById($_POST['id']);
         if(!$getProduct){
             setHTTPCode(404);
-            goOldUrl();
+            exit;
         }
         $own_product = $getProduct['username'];
         if($own_product != $_SESSION['username']){
             setHTTPCode(404, "You are not the owner of this product!");
-            goOldUrl();
+            exit;
         }
         $this->model->removeAuction($getProduct);
         setHTTPCode(200, "Remove success!");
-        goOldUrl();
+        exit;
     }
 
     public function editAuction(){
@@ -297,10 +298,11 @@ class user extends Controller{
         //  If is array and not empty
         if(is_array($product['category_name']) && !empty($product['category_name']))   
             $allCate = array_diff($allCate, $product['category_name']);
-        $this->render(__DIR__. '/../view/edit_auction.php', ['title' => "Edit auction", "product" => $product, "cateOutProduct" => $allCate], TRUE, FALSE);
+        $this->render(__DIR__. '/../view/edit_auction.php', ['title' => "Edit auction", "product" => $product, "cateOutProduct" => $allCate]);
     }
 
     public function postEditAuction(){
+        
         $this->checkPostEditRequest();
         if(empty($_SESSION['username'])){
             echo "Require login!";
@@ -312,6 +314,7 @@ class user extends Controller{
             setHTTPCode(400, "End date smaller than current date!!");
             goOldUrl();
         }
+        
         //  Get product And user
         $product = $this->model->getProductWithUsr($_POST['id']);
         if(!$product){
@@ -324,6 +327,7 @@ class user extends Controller{
             echo "You are not the owner of this auction!";
             goOldUrl();
         }
+
         //  Upload header
         $nameHeader = $this->uploadLocalHeader();
         $updateData = [
@@ -410,9 +414,10 @@ class user extends Controller{
             //  Convert to float
             $minimum = (float)$_POST['minimum_price'];
             $hot = (float)$_POST['hot_price'];
-            if($minimum >= $hot)    //  If minimum bigger than maximum price
+            if($minimum >= $hot){    //  If minimum bigger than maximum price
                 echo "Hot price not valid!";
                 goOldUrl();
+            }
         }
 
     }

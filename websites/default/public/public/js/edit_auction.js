@@ -21,6 +21,9 @@ window.onload = function(){
         xhr.addEventListener('load', function(event) {
            alert(xhr.responseText);
            console.log(xhr.responseText);
+           if(xhr.status === 200){
+            window.location.href = "https://" + window.location.host + "/user/profile";
+        }
         });
 
         xhr.open('POST', 'https://' + window.location.hostname + '/user/postEditAuction');
@@ -37,7 +40,9 @@ window.onload = function(){
             xhr.addEventListener('load', function(event){
                 alert(xhr.responseText);
                 console.log(xhr.responseText);
-                location.reload();
+                if(xhr.status === 200){
+                    window.location.href = "https://" + window.location.host + "/user/profile";
+                }
             });
             xhr.send(("id=" + idProduct));
         }

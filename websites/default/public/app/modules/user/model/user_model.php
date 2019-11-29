@@ -70,7 +70,8 @@ class User_model extends Database{
                     LEFT JOIN product_category pc ON pc.product_id = p.id
                     LEFT JOIN category c ON c.id = pc.category_id
                     WHERE pt.user_id =:id
-                    GROUP BY p.id";
+                    GROUP BY p.id
+                    ORDER BY pt.created_at DESC";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":id", $id);
             $stmt->execute();
@@ -95,7 +96,8 @@ class User_model extends Database{
                     LEFT JOIN product_category pc ON pc.product_id = p.id
                     LEFT JOIN category c ON c.id = pc.category_id
                     WHERE p.user_id =:id
-                    GROUP BY p.id";
+                    GROUP BY p.id
+                    ORDER BY p.created_at DESC";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":id", $id);
             $stmt->execute();
@@ -103,6 +105,24 @@ class User_model extends Database{
             if(!$result)
                 return NULL;
             $result = $this->editPriceTimeAuction($result);
+            if(!$result)
+                return NULL;
+            return $result;
+        }
+        catch(PDOException $err){
+            die($err);
+        }
+    }
+
+    public function getReviewUserById($id){
+        try{
+            $sql = "SELECT pv.*, p.name, p.image FROM product_review pv 
+                    INNER JOIN product p ON pv.product_id = p.id
+                    WHERE pv.user_id=:id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":id", $id);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if(!$result)
                 return NULL;
             return $result;
@@ -422,7 +442,7 @@ class User_model extends Database{
 
     public function getProductWithUsr($id){
         try{
-            $sql = "SELECT p.name, p.image, c.id as category_id, c.name as category_name, u.username
+            $sql = "SELECT p.name, p.image, p.current_bird_price, c.id as category_id, c.name as category_name, u.username
                     FROM product p
                     LEFT JOIN user u ON u.id=p.user_id
                     LEFT JOIN product_category pc ON pc.product_id = p.id

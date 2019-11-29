@@ -88,11 +88,21 @@
                 //  Check if not empty and is array but first value of array is null
                 else if(!empty($newArr['product_thumbnail']) && is_array($newArr['product_thumbnail']) && array_filter($newArr['product_thumbnail']) == [])
                     $newArr['product_thumbnail'] = NULL;
+                //  Check if not empty and is string
+                else if(!empty($newArr['product_thumbnail']) && is_string($newArr['product_thumbnail']))
+                    $newArr['product_thumbnail'] = [$newArr['product_thumbnail']];
+                else
+                    $newArr['product_thumbnail'] = NULL;
+
 
                 if(empty($newArr['current_bird_price']))
                     $newArr['current_bird_price'] = 0.00;
             
+                if(strtotime($newArr['end_at']) <= strtotime($newArr['created_at']))
+                    $newArr['elapsed_time'] = FALSE;
+                else
                 $newArr['elapsed_time'] = calculateTime($newArr['created_at'], $newArr['end_at']);
+                
             }
             return $newArr;
         }
