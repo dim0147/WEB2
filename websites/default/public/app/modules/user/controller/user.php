@@ -97,6 +97,19 @@ class user extends Controller{
         $this->render(dirname(__DIR__). "/view/profile.php", ['title' => 'User Profile', 'reviews' => $reviewUser, 'user' => $user, 'birds' => $birdUser, 'auctions' => $auctionUser]);
     }
 
+    public function showUserProfile(){
+        if(empty($_GET['username'])){
+            exit("Please enter a valid username!");
+        }
+        $getUser = $this->model->getUsrByUsrName($_GET['username']);
+        if(!$getUser || count($getUser) !== 1){
+            exit("Not found user!");
+        }
+        $user = $getUser[0];
+        $auctions = $this->model->getAuctionUserById($user['id']);
+        $this->render(dirname(__DIR__) . "/view/show_user_profile.php", ["user" => $user, "title" => $user['name']." Profile", "auctions" => $auctions]); 
+    }
+
     public function updateProfile(){
         $_SESSION['old_url'] = getCurrentURL();
         if(empty($_SESSION['username'])){

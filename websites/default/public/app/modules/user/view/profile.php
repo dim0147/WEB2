@@ -22,6 +22,11 @@
             <span class="field_v"><a href="<?php echo URL_WEB?>user/changePassword">Change your password</a></span>
         </div>
 
+        <div class="field">
+            <h3 class="field_t">Date Joined:</h3>
+            <span class="field_v"><?php echo $user['created_at'] ?></span>
+        </div> 
+
         <a href="<?php echo URL_WEB ?>user/updateProfile" class="update">Update</a>    
     </div>
 

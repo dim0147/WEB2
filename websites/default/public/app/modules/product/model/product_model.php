@@ -37,7 +37,7 @@
                         p.hot_price, p.created_at, p.end_at, p.status, p.current_bird_price, 
                         pt.name AS product_thumbnail,   
                         c.name AS category_name, 
-                        u.name AS own_product
+                        u.name AS own_product, u.username AS own_product_username
                         FROM product p
                         LEFT JOIN product_thumbnail pt ON pt.product_id = p.id
                         LEFT JOIN product_category pc ON pc.product_id = p.id

@@ -5,7 +5,7 @@
 
     <main>
         <h1>Latest Listings / Search Results / Category listing</h1>
-
+        <?php if(!empty($products && is_array($products))){ ?>
         <ul class="productList">
             <?php foreach($products as $prod){ ?>
             <li>
@@ -22,6 +22,10 @@
         <?php }?>
            
         </ul>
+            <?php }else{ ?>
+        
+                <h1>There is No product to display!</h1>
+            <?php } ?>
 
         <hr />
 
