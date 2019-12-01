@@ -1,0 +1,42 @@
+.Tb {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+.Tb  td, th {
+    border: 1px solid #e0dcdc;
+    text-align: left;
+    padding: 7px;
+  }
+  
+  .Tb tr:nth-child(even) {
+    background-color: #dcdfe0;
+  }
+
+.action{
+    color: black;
+    text-decoration: none;
+}
+
+.action:hover{
+    color: rgb(156, 155, 155) !important;
+}
+
+.btn{
+    display: block;
+    width: 90px;
+    height: 15px;
+    background: rgb(149, 175, 78);
+    padding: 11px;
+    text-align: center;
+    border-radius: 4px;
+    color: rgb(169, 240, 2);
+    font-weight: bold;
+    text-decoration: none;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+.btn:hover{
+    background: rgb(171, 182, 139);
+}

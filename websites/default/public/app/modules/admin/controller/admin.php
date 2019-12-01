@@ -68,6 +68,17 @@
             }
         }
 
+        public function dashboard(){
+            $this->render(__DIR__ . "/../view/dashboard.php", ['title' => 'Admin Dashboard'], FALSE, FALSE, FALSE);
+        }
+
+        public function showCategory(){
+            $_SESSION['old_url'] = getCurrentURL();
+            $this->Authenticate();
+            $categorys = $this->model->getCate();
+            $this->render(__DIR__ . '/../view/show_category.php', ['title' => 'All Category', 'categorys' => $categorys], FALSE, FALSE, FALSE);
+        }
+
         public function addCate(){
             $_SESSION['old_url'] = getCurrentURL();
             $this->Authenticate();
@@ -174,6 +185,31 @@
                 setHTTPCode('Fail while delete category!');
                 goOldUrl();
             }
+        }
+
+        public function showAccount(){
+            $_SESSION['old_url'] = getCurrentURL();
+            $this->Authenticate();
+            $accounts = $this->model->getAccount();
+            $this->render(__DIR__ . '/../view/show_account.php', ['title' => 'All Account', 'accounts' => $accounts], FALSE, FALSE, FALSE);
+        }
+
+        public function removeUser(){
+            $this->Authenticate();
+            if(!isset($_GET['id'])){
+                echo "Missing require field!";
+                goOldUrl();
+            }
+            $this->model->removeAccount($_GET['id']);
+            echo "Remove done!";
+            goOldUrl();
+        }
+        
+        public function showAuction(){
+            $_SESSION['old_url'] = getCurrentURL();
+            $this->Authenticate();
+            $auctions = $this->model->getAuction();
+            $this->render(__DIR__ . '/../view/show_auction.php', ['title' => 'All Account', 'auctions' => $auctions], FALSE, FALSE, FALSE);
         }
 
         public function Authenticate(){

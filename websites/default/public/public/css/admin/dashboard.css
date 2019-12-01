@@ -1,0 +1,149 @@
+html, body {
+    min-height: 100% !important;
+    height: 100%;
+    background: rgb(182, 182, 182);
+}
+
+
+    /* MENU */
+.container{
+    min-height: 100% !important;
+    height:100%;
+}
+
+.navigation {
+  width: 270px;
+  height: 100%;
+  float: left;
+}
+
+.main_menu, .sub_menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: rgb(83, 82, 82);
+}
+
+.main_menu{
+}
+
+.main_menu a {
+  display: block;
+  background-color: rgb(83, 82, 82);
+  text-decoration: none;
+  padding: 10px;
+  color: rgb(221, 215, 215);
+  font-weight: bold;
+  font-size: 20px;
+  border-bottom: 1px solid rgb(129, 128, 128);
+}
+
+.main_menu a:hover {
+    background-color: rgb(127, 129, 129);
+}
+
+.main_menu li:hover .sub_menu {
+  display: block;
+  max-height: 150px;
+}
+
+.sub_menu a {
+  border-bottom: none;
+  background-color: rgb(219, 219, 209);
+  color: rgb(102, 100, 101);
+  font-size: 15px;
+}
+
+.sub_menu a:hover {
+  background-color: rgb(196, 187, 187);
+}
+
+.sub_menu {
+  overflow: hidden;
+  max-height: 0px;
+  -webkit-transition: all 0.5s 0.1s ease-out;
+}
+
+/* END MENU */
+
+/* Content */
+
+.content{
+    margin-left: 280px;
+    border: 1px solid #ccc!important;
+    border-radius: 16px;
+    background: whitesmoke;
+}
+
+/* END CONTENT */
+
+/* DASHBOARD */
+
+.db_title{
+    text-align: center;
+    color: rgb(245, 6, 153);
+}
+
+/* NOTIFICATION */
+.db_notification{
+    border-top: 1px solid black;
+}
+
+.db_nt_auction{
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2), 0 4px 20px 0 rgba(0,0,0,0.19);
+    position: relative;
+    display: block;
+    width: 270px;
+    height: 184px;
+    font-size: 15px;
+    line-height: 1.5;
+    transition: 1s ease;    
+    margin: 10px;
+}
+
+.db_nt_auction:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 1s ease;
+}
+
+.db_nt_title{
+    padding: 8px 16px!important;
+    font-size: 24px!important;
+    position:absolute;
+    left:0;
+    bottom:0;
+    color: white;
+    font-weight: bold;
+}
+
+/* END NOTIFICATION */
+
+.chart{
+    width: 100%;
+    position: relative;
+    height: 600px;
+    border-top: 1px solid black;
+    overflow: hidden;
+}
+
+.active{
+  background: rgb(204, 196, 196)!important;
+}
+
+
+.none{
+  text-align: center;
+  font-style: italic;
+  margin: 20px;
+}
+
+.link_product{
+  text-decoration: none;
+  color: green;
+}
+
+.link_user{
+  text-decoration: none;
+  color: blue;
+}
