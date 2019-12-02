@@ -248,11 +248,11 @@ class Admin_model extends Database{
 
     public function getAuction(){
         try{
-            $sql = "SELECT p.id, p.name, p.image, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.current_bird_price, p.status,u.username
+            $sql = "SELECT p.id, p.approve, p.name, p.image, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.current_bird_price, p.status,u.username
                     FROM product p
                     INNER JOIN user u ON p.user_id = u.id
                     GROUP BY p.id
-                    ORDER BY created_at DESC";
+                    ORDER BY p.approve ASC, p.created_at ASC";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -273,6 +273,36 @@ class Admin_model extends Database{
                     $result[$key]['elapsed_time'] = calculateTime($product['created_at'], $product['end_at']);
             }
             return $result;
+        }
+        catch(PDOException $err){
+            die($err);
+        }
+    }
+
+    public function getAuctionNeedApprove(){
+        try{
+            $sql = "SELECT COUNT(id) as total FROM product WHERE approve = 0";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if(!$result || !is_array($result) || !isset($result[0]['total']))
+                return NULL;
+            if((int)$result[0]['total'] === 0)
+                return NULL;
+            return (int)$result[0]['total'];
+        }
+        catch(PDOException $err){
+            die($err);
+        }
+    }
+
+    public function setApproveAuction($id, $approve){
+        try{
+            $sql = "UPDATE product SET approve=:approve WHERE id=:id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":approve", $approve, PDO::PARAM_INT);
+            $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+            $stmt->execute();
         }
         catch(PDOException $err){
             die($err);

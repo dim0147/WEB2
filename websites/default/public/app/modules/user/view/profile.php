@@ -84,6 +84,7 @@
                     <th>Current_bird</th>
                     <th>Status</th>
                     <th>Time left</th>
+                    <th>Approve</th>
                     <th>Action</th>
                 </tr>
             <?php foreach($auctions as $auction){ ?>
@@ -97,7 +98,14 @@
                     <td><p class="tb_field_bird_current"><?php echo '£' . $auction['current_bird_price'] ?></p></td>
                     <td><p class="tb_field_status"><?php echo $auction['status'] ?></p></td>
                     <td><p><?php echo $auction['elapsed_time'] ?></p></td>
-                    <td><a class ="link_product action" href="<?php echo URL_WEB . 'user/editAuction?id='.$auction['id']?>">Edit</a> | <a class ="link_product action" href="<?php echo URL_WEB . 'product/detail?id='.$auction['id']?>">View</a></td>
+                    <td>
+                    <?php if ($auction['approve'] == FALSE || $auction['approve'] == 0){ ?>
+                    <p style="color:red">Need Approve</p>
+                    <?php }else{ ?>
+                    <p style="color:green">Approved</p>
+                    <?php } ?>
+                    </td>
+                    <td><a class ="link_product action" href="<?php echo URL_WEB . 'user/editAuction?id='.$auction['id']?>">Edit</a> | <a class ="link_product action" href="<?php echo URL_WEB . 'product/detail?id='.$auction['id']?>">View</a>| <a class ="link_product action" href="<?php echo URL_WEB . 'product/showBidAuction?id='.$auction['id']?>">See Birds</a></td>
                 </tr>
         <?php } ?>
             </table>

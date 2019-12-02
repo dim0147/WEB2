@@ -63,7 +63,7 @@ class User_model extends Database{
     public function getBirdUserById($id){
         try{
             $sql = "SELECT p.current_bird_price, p.image, p.name, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.status,
-                    pt.product_id, pt.price AS user_price, pt.created_at AS time_bird,
+                    pt.product_id, MAX(pt.price) AS user_price, pt.created_at AS time_bird,
                     GROUP_CONCAT(c.name SEPARATOR ', ') AS product_category
                     FROM product_bird pt
                     INNER JOIN product p ON p.id = pt.product_id
@@ -88,14 +88,18 @@ class User_model extends Database{
         }
     }
     
-    public function getAuctionUserById($id){
+    public function getAuctionUserById($id, $approve = FALSE){
         try{
-            $sql = "SELECT p.id, p.current_bird_price, p.image, p.name, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.status,
+            if($approve)
+                $approve = "AND p.approve = 1";
+            else
+                $approve = NULL;
+            $sql = "SELECT p.id, p.approve, p.current_bird_price, p.image, p.name, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.status,
                     GROUP_CONCAT(c.name SEPARATOR ', ') AS product_category
                     FROM product p
                     LEFT JOIN product_category pc ON pc.product_id = p.id
                     LEFT JOIN category c ON c.id = pc.category_id
-                    WHERE p.user_id =:id
+                    WHERE p.user_id =:id $approve
                     GROUP BY p.id
                     ORDER BY p.created_at DESC";
             $stmt = $this->pdo->prepare($sql);

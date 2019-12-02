@@ -106,7 +106,7 @@ class user extends Controller{
             exit("Not found user!");
         }
         $user = $getUser[0];
-        $auctions = $this->model->getAuctionUserById($user['id']);
+        $auctions = $this->model->getAuctionUserById($user['id'], TRUE);
         $this->render(dirname(__DIR__) . "/view/show_user_profile.php", ["user" => $user, "title" => $user['name']." Profile", "auctions" => $auctions]); 
     }
 

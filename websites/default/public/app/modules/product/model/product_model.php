@@ -20,7 +20,7 @@
 
         public function checkProductExist($id){
             try{
-                $sql = "SELECT id, current_bird_price, bird_max_price, bird_minimum_price, end_at, user_id FROM product WHERE id=:id";
+                $sql = "SELECT id, approve, current_bird_price, bird_max_price, bird_minimum_price, end_at, user_id FROM product WHERE id=:id";
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->bindValue(":id", $id);
                 $stmt->execute();
@@ -33,7 +33,7 @@
 
         public function getProductById($id){
             try{
-                $sql = "SELECT p.id, p.name, p.description, p.image, p.bird_max_price, p.bird_minimum_price,
+                $sql = "SELECT p.id, p.approve, p.name, p.description, p.image, p.bird_max_price, p.bird_minimum_price,
                         p.hot_price, p.created_at, p.end_at, p.status, p.current_bird_price, 
                         pt.name AS product_thumbnail,   
                         c.name AS category_name, 
@@ -52,6 +52,27 @@
                 if(!$result)
                     return false;
                 return $this->mergeResultProd($result);
+            }
+            catch(PDOException $err){
+                die($err);
+            }
+        }
+
+        public function getBirdOfAuction($idAuction){
+            try{
+                $sql = "SELECT pb.price, pb.created_at, pb.isHot, 
+                        u.username, u.name
+                        FROM product_bird pb
+                        INNER JOIN user u ON u.id = pb.user_id
+                        WHERE pb.product_id =:idAuction
+                        ORDER BY pb.price DESC";
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->bindValue(":idAuction", $idAuction);
+                $stmt->execute();
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if(!$result)
+                    return NULL;
+                return $result;
             }
             catch(PDOException $err){
                 die($err);

@@ -36,6 +36,7 @@
             //  Login success
             $_SESSION['username'] =  $user['username'];
             $_SESSION['name'] =  $user['name'];
+            $_SESSION['is_admin'] =  TRUE;
             setHTTPCode(200, "Login success!");
             goOldUrl();
         }
@@ -59,6 +60,7 @@
             if($createAdmin){
                 $_SESSION['username'] = $_POST['username'];
                 $_SESSION['name'] = $_POST['name'];
+                $_SESSION['is_admin'] =  TRUE;
                 setHTTPCode(201, 'Create new admin success!!');
                 goOldUrl();
             }
@@ -69,7 +71,10 @@
         }
 
         public function dashboard(){
-            $this->render(__DIR__ . "/../view/dashboard.php", ['title' => 'Admin Dashboard'], FALSE, FALSE, FALSE);
+            $_SESSION['old_url'] = getCurrentURL();
+            $this->Authenticate();
+            $numNewAuction = $this->model->getAuctionNeedApprove();
+            $this->render(__DIR__ . "/../view/dashboard.php", ['title' => 'Admin Dashboard', 'newAuction' => $numNewAuction], FALSE, FALSE, FALSE);
         }
 
         public function showCategory(){
@@ -210,6 +215,28 @@
             $this->Authenticate();
             $auctions = $this->model->getAuction();
             $this->render(__DIR__ . '/../view/show_auction.php', ['title' => 'All Account', 'auctions' => $auctions], FALSE, FALSE, FALSE);
+        }
+
+        public function approveAuction(){
+            $this->Authenticate();
+            if(!isset($_GET['id'], $_GET['action'])){
+                echo "Missing require field!";
+                goOldUrl();
+            }
+            if($_GET['action'] === 'approve'){
+                $this->model->setApproveAuction($_GET['id'], 1);
+                echo "Approve auction id " .  $_GET['id'] . " success!";
+                goOldUrl();
+            }
+            else if($_GET['action'] === 'unapprove'){
+                $this->model->setApproveAuction($_GET['id'], 0);
+                echo "UnApprove auction id " .  $_GET['id'] . " success!";
+                goOldUrl();
+            }
+            else{
+                echo "Wrong parameter!";
+                goOldUrl();
+            }
         }
 
         public function Authenticate(){

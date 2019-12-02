@@ -4,6 +4,17 @@
 [css]
 <link rel="stylesheet" href="<?php echo URL_WEB?>public/css/ibuy.css" />
 [/css]
+
+<div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+
+
     <h1>Product Page</h1>
     <article class="product">
 
@@ -53,6 +64,18 @@
                     <input type="submit" id="placebid" value="Place bid" />
                 <?php } ?>
             </form>
+            <a href="<?php echo URL_WEB.'product/showBidAuction?id='.$product['id']?>">Show all bird of this auction</a>
+            <br>
+            Share For More:<br>
+            <div style="display:inline-block">
+                <div class="fb-share-button" 
+                    data-href="<?php echo URL_WEB."product/detail?id=".$product['id']?>" 
+                    data-layout="button_count">
+                </div>
+                <div style="float:left;">
+                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </div>
+            </div>
         </section>
         <section class="description">
             <p>

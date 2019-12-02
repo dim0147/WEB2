@@ -52,6 +52,7 @@
                 <th>Time Left</th>
                 <th>Current bird</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
         <?php foreach($auctions as $auction){ ?>
             <tr>
@@ -66,6 +67,13 @@
                 <td><p style="color:red"><?php echo $auction['elapsed_time'] ?></p></td>
                 <td><p style="color:brown"><?php echo $auction['current_bird_price'] ?></p></td>
                 <td><p><?php echo $auction['status'] ?></p></td>
+                <td>
+                <?php if($auction['approve'] == 0 || $auction['approve'] == FALSE){ ?>
+                    <a class ="btn" style="color:white;background:blue" href="<?php echo URL_WEB . 'admin/approveAuction?id=' .$auction['id'].'&action=approve'?>">Approve</a>
+                <?php }else{ ?>
+                    <a class ="btn" style="color:white;background:red"  href="<?php echo URL_WEB . 'admin/approveAuction?id=' .$auction['id'].'&action=unapprove'?>">Un Approve</a>
+                <?php } ?>
+                </td>
             
             </tr>
         <?php } ?>

@@ -5,6 +5,9 @@
     <li>
 	  <label for="user">Hello, <?php echo $_SESSION['name'] ?> &#9662;</label>
       <ul class="menu-child">
+		<?php if (!empty($_SESSION['is_admin'])){ ?>
+			<li><a href="<?php echo URL_WEB . 'admin/dashboard'?>">Dashboard</a></li>
+		<?php } ?>
         <li><a href="<?php echo URL_WEB . 'user/profile'?>">Profile</a></li>
 		<li><a href="<?php echo URL_WEB . 'user/logout'?>">Log out</a></li>
 	  </ul>

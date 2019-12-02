@@ -37,16 +37,24 @@
 
     <div class="content">
         <h1 class="db_title">Dashboard</h1>
+
+        <div class="db_notification">
+            <h1 style="font-weight:bold; margin-left: 10px;">Go to Home</h1>
+            <a style="text-align:center;" href="<?php echo URL_WEB ?>">Home Page</a>
+        </div>
+
+
+        <?php if(!empty($newAuction)){ ?>
         <div class="db_notification">
             <h1 style="font-weight:bold; margin-left: 10px;">Recently</h1>
             <a href="<?php echo URL_WEB. 'admin/showAuction'?>">
                 <div class="db_nt_auction">
                     <img src="<?php echo URL_WEB . 'public/images/auction.jpg'?>" alt="Lights" style="width:100%;height:100%;vertical-align: middle;border-style: none;position:absolute;">
-                    <div class="db_nt_title">10 Auction Added ></div>
+                    <div class="db_nt_title"><?php echo $newAuction ?> Auction Added ></div>
                 </div>
             </a>
-
         </div>
+        <?php } ?>
 
         <div class="chart">
             <h1 style="font-weight:bold; margin-left: 10px;">Chart</h1>

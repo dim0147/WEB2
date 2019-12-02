@@ -29,6 +29,7 @@
                        LEFT JOIN category c ON c.id = pc.category_id
                        WHERE p.end_at > NOW()
                        AND p.status = 'Open'
+                       AND p.approve = 1
                        GROUP BY p.id
                        ORDER BY p.created_at DESC
                        LIMIT 10";
@@ -52,6 +53,7 @@
                        WHERE c.name=:category
                        AND p.end_at > NOW()
                        AND p.status = 'Open'
+                       AND p.approve = 1
                        GROUP BY p.id";
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->bindValue(":category", $category);
@@ -76,6 +78,7 @@
                        LIKE :string
                        AND p.end_at > NOW()
                        AND p.status = 'Open'
+                       AND p.approve = 1
                        GROUP BY p.id";
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->bindValue(":string", $string, PDO::PARAM_STR);

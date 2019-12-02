@@ -16,8 +16,20 @@
         $product = $this->model->getProductById($_GET['id']);
         if(!$product)
             exit("Cannot find product!");
+        if($product['approve'] == 0 || $product['approve'] == FALSE)
+            exit("Product need approve by admin!");
         $_SESSION['old_url'] = getCurrentURL();
         $this->render(__DIR__ . '/../view/detail.php', ['title' => "Product detail", 'product' => $product, 'category' => $category]);
+    }
+
+    public function showBidAuction(){
+        if(!isset($_GET['id']))
+            exit("Missing require field!");
+        $product = $this->model->getProductById($_GET['id']);
+        if(!$product)
+            exit("No product found!");
+        $birds = $this->model->getBirdOfAuction($_GET['id']);
+        $this->render(__DIR__ . '/../view/show_bird.php', ['title' => $product['name'] . "'s Bird", 'product' => $product, 'birds' => $birds]);
     }
 
     public function postPlaceBid(){
@@ -43,6 +55,11 @@
         if(!$product){
            echo "Not found product!";
            goOldUrl();
+        }
+        //  Check if product not approve by admin
+        if($product[0]['approve'] == 0 || $product[0]['approve'] == FALSE){
+            echo "Product need approve by admin!";
+            goOldUrl();
         }
         //  Check if end_Date smaller than current time
         if(strtotime($product[0]['end_at']) <= time()){
@@ -131,8 +148,13 @@
             echo "Product not exist!";
             goOldUrl();
         }
+
+        //  Check if product not approve by admin
+        if($checkProd[0]['approve'] == 0 || $checkProd[0]['approve'] == FALSE){
+            echo "Product need approve by admin!";
+            goOldUrl();
+        }
             
-        
         $getUser = $this->model->getUserByUsrName($_SESSION['username']);
         if(!$getUser){
             echo "Unauthorized!, please logout and login again";
