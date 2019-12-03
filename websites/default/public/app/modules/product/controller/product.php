@@ -1,10 +1,24 @@
 <?php 
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Transaction;
  class product extends Controller{
 
+    private $apiContext;
     function __construct($view){
         $modelFile = dirname(__DIR__) . '/model/product_model.php';
         $modelName = 'Product_model';
         parent::__construct($view, $modelFile, $modelName);
+        $this->apiContext = new \PayPal\Rest\ApiContext(
+            new \PayPal\Auth\OAuthTokenCredential(
+                PAYPAL_CLIENT_ID,    
+                PAYPAL_SECRET      
+            ));
     }
 
     public function detail(){
@@ -29,7 +43,16 @@
         if(!$product)
             exit("No product found!");
         $birds = $this->model->getBirdOfAuction($_GET['id']);
-        $this->render(__DIR__ . '/../view/show_bird.php', ['title' => $product['name'] . "'s Bird", 'product' => $product, 'birds' => $birds]);
+        $winnerBird = NULL;
+        if($birds){
+            foreach($birds as $bird){
+                if(!empty($bird['product_id_win'])){
+                    $winnerBird = $bird;
+                    break;
+                }
+            }
+        }
+        $this->render(__DIR__ . '/../view/show_bird.php', ['winnerBird'=> $winnerBird,'title' => $product['name'] . "'s Bird", 'product' => $product, 'birds' => $birds]);
     }
 
     public function postPlaceBid(){
@@ -62,7 +85,7 @@
             goOldUrl();
         }
         //  Check if end_Date smaller than current time
-        if(strtotime($product[0]['end_at']) <= time()){
+        if(strtotime($product[0]['end_at']) <= time() || $product[0]['finish'] === TRUE || !empty($product[0]['bid_winner_id'])){
             echo "This auction is finish! You cannot place bird!";
             goOldUrl();
         }
@@ -81,6 +104,33 @@
         $this->model->updateBirdPriceProd($idProd, (float)$_POST['amount']);
         setHTTPCode(200, "Place your bid success!");
         goOldUrl();
+    }
+
+    public function placeHotBid(){
+         //  Check if user login
+        if(empty($_SESSION['username'])){
+            echo "You have to login first!";
+            goUserLogin();
+        }
+
+        if(!isset($_GET['id'])){
+            echo "Missing require field!";
+            goOldUrl();
+        }
+        
+        $product = $this->model->getProductById($_GET['id']);
+        if(!$product){
+            echo "Not Found product!";
+            goOldUrl();
+        }
+
+        $this->checkUserValid($product['product_user_id']);
+
+        if(empty($product['hot_price'])){
+            echo "This product don't have hot price!";
+            goOldUrl();
+        }
+        $this->createPayment($product['id'], $product['name'], 1, $product['hot_price']);
     }
 
     public function checkRequireBird($current_bird, $bird_max, $bird_minimum, $own_product){
@@ -110,6 +160,7 @@
         }
         // Get ID of user 
         $userID = $user[0]['id']; 
+
         // If user is the own of product
         if($userID == $own_product){
             echo "You can't place bid on your product!";
@@ -165,6 +216,101 @@
         $this->model->createReview($_POST['id'], $userID, $_POST['review_text']);
         echo "Create successful!";
         goOldUrl();
+    }
+
+    public function createPayment($idProduct, $name, $quantity, $price){
+        $payerInfo = new  PayPal\Api\PayerInfo();
+        $payerInfo->setFirstName($_SESSION['username']);
+        
+
+        $payer = new \PayPal\Api\Payer();
+        $payer->setPaymentMethod("paypal")
+              ->setPayerInfo($payerInfo);
+
+        $item = new \PayPal\Api\Item();
+        $item->setName($name)
+        ->setCurrency('SGD')
+        ->setQuantity($quantity)
+        ->setSku($idProduct) // Similar to `item_number` in Classic API
+        ->setPrice($price);  
+        $itemList = new \PayPal\Api\ItemList();
+        $itemList->setItems(array($item));
+
+        $amount = new \PayPal\Api\Amount();
+        $amount->setCurrency("SGD")
+               ->setTotal($price * $quantity);
+
+        $transaction = new \PayPal\Api\Transaction();
+        $transaction->setAmount($amount)
+                    ->setItemList($itemList)
+                    ->setDescription("Buy ".$name." with hot price: ".$price);
+
+        $redirectUrls = new \PayPal\Api\RedirectUrls();
+        $redirectUrls->setReturnUrl(URL_WEB . 'product/completeCheckout?success=true&username=' . $_SESSION['username'])
+                     ->setCancelUrl(URL_WEB . 'product/completeCheckout?success=false&username=' . $_SESSION['username']);
+
+        $payment = new \PayPal\Api\Payment();
+        $payment->setIntent("sale")
+                ->setPayer($payer)
+                ->setRedirectUrls($redirectUrls)
+                ->setTransactions(array($transaction));
+
+        try{
+            $payment->create($this->apiContext);
+        }
+        catch (PayPal\Exception\PayPalConnectionException $ex) {
+            echo $ex->getCode(); // Prints the Error Code
+            echo $ex->getData(); // Prints the detailed error message 
+            die($ex);
+        } catch (Exception $ex) {
+            die($ex);
+        }
+        $urlPayment = $payment->getApprovalLink();
+        header("Location: " . $urlPayment);
+        exit;
+    }
+
+    public function completeCheckout(){
+        if(empty($_GET['success']) || !isset($_GET['paymentId']) || empty($_GET['username'])){
+            exit("Missing require field!");
+        }
+        if($_GET['success'] !== 'true'){
+            goOldUrl();
+        }
+        try{
+            $payment = \PayPal\Api\Payment::get($_GET['paymentId'], $this->apiContext);
+        }
+        catch (PayPal\Exception\PayPalConnectionException $ex) {
+            echo $ex->getData(); 
+            die($ex);
+        } catch (Exception $ex) {
+            die($ex);
+        }
+        $result = $payment->toArray();
+        if(!isset($result['state'], $result['transactions']['0']['item_list']['items'][0]['sku'], $result['transactions']['0']['item_list']['items'][0]['price'])){
+            exit("Cannot get require information!");
+        }
+        $status = $result['state'];
+        $idProduct = $result['transactions']['0']['item_list']['items'][0]['sku'];
+        $hotPrice = $result['transactions']['0']['item_list']['items'][0]['price'];  
+        if($status != "created" && $status != "approved")
+            exit("Transaction fail!");
+        $product = $this->model->getProductById($idProduct);
+        if(!$product)
+            exit("Product not found!");
+        if($product['finish'] === TRUE || !empty($product['bid_winner_id']))
+            exit("This product is finish bid!");
+        $user = $this->model->getUserByUsrName($_SESSION['username']);
+        if(!$user)
+            exit("User not exist!");
+        $userId = $user[0]['id'];
+        if($product['product_user_id'] == $userId){
+            exit("You cannot bid on your product!");
+        }
+        $idNewBid = $this->model->createHotBidProduct($idProduct, $userId, $hotPrice);
+        $this->model->updateBirdPriceProd($idProduct, $hotPrice);
+        $this->model->finishAuctionWithBid($idProduct, $idNewBid);
+        echo "Congratulation, you have won this auction!";
     }
 
  }

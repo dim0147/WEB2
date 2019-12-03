@@ -36,28 +36,29 @@
                     echo "<h3>" .$product['category_name'] . "</h3>";
             ?>
             <p>Auction created by <a href="<?php echo URL_WEB . 'user/showUserProfile?username='.$product['own_product_username'] ?>"><?php echo $product['own_product'] ?></a></p>
-            <p class="price">Current bid: £<?php echo $product['current_bird_price'] ?></p>
+            <p class="price" style="color:green">Current bid: £<?php echo $product['current_bird_price'] ?></p>
             <?php 
             if((float)$product['bird_minimum_price'] !== 0.00){
             ?>
-                <p class="price">Minimum bid: £<?php echo $product['bird_minimum_price'] ?></p>
-                <?php if($product['elapsed_time'] !== FALSE){ ?>
-                    <p class="price">*Please bird more than £<?php echo $product['bird_minimum_price'] ?></p>
+                <p class="price" style="color:blue">Minimum bid: £<?php echo $product['bird_minimum_price'] ?></p>
+                <?php if($product['finish'] === FALSE){ ?>
+                    <p class="price" style="color:blue">*Please bird more than £<?php echo $product['bird_minimum_price'] ?></p>
                 <?php } ?>
             <?php } ?>
 
             <?php 
-            if((float)$product['bird_max_price'] !== 0.00){
+            if(!empty($product['hot_price']) && (float)$product['hot_price'] !== 0.00 && $product['finish'] == FALSE){
             ?>
-                <p class="price">Maximum bid: £<?php echo $product['bird_max_price'] ?></p>
+                <p class="price">Hot Price: £<?php echo $product['hot_price'] ?></p>
+                <a class="btn1" href="<?php echo URL_WEB. 'product/placeHotBid?id=' . $product['id']?>">Buy With £<?php echo $product['hot_price']?>!</a><br>
             <?php } ?>
             
-            <?php if($product['elapsed_time'] === FALSE){ ?>
+            <?php if($product['finish'] != FALSE){ ?>
                 <h1 style="color:red!important;font-weight:bold;" >This product is end bird!</h1>
             <?php }else{ ?>
             <time>Time left: <?php echo $product['elapsed_time'] ?></time>
             <?php } ?>
-            <?php if($product['elapsed_time'] !== FALSE){ ?>
+            <?php if($product['finish'] == FALSE){ ?>
             <form action="<?php echo URL_WEB . "product/postPlaceBid"?>" class="bid" method="POST">
                 <input name="amount" type="number" min="0.00"  placeholder="Enter bid amount" required/>
                 <input name="id" type="hidden" value="<?php echo $product['id']?>"/>

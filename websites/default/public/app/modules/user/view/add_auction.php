@@ -23,10 +23,7 @@
             <input class="field_v" name ="minimum_price" type="number" min="0.00" max="10000.00" step="0.01" placeholder="Minimum price">
         </div>
 
-        <div class="field">
-            <h3 class="field_t">Maximum price:</h3>
-            <input class="field_v" name ="maximum_price" type="number" min="0.00" max="10000.00" step="0.01" placeholder="Maximum price">
-        </div>
+            <input type="hidden" value="0.00" name ="maximum_price">
 
         <div class="field">
             <h3 class="field_t">HOT PRICE:</h3>

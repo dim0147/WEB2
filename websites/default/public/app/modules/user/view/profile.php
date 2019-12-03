@@ -79,10 +79,10 @@
                     <th>Image</th>
                     <th>Category</th>
                     <th>Minimum Price</th>
-                    <th>Maximum Price</th>
                     <th>Hot Price</th>
                     <th>Current_bird</th>
                     <th>Status</th>
+                    <th>Bid Win</th>
                     <th>Time left</th>
                     <th>Approve</th>
                     <th>Action</th>
@@ -93,11 +93,23 @@
                     <td><img src="<?php echo URL_WEB?>/public/images/<?php echo $auction['image']?>" height="42" width="42"></td>
                     <td><p class="tb_field_category"><?php echo $auction['product_category'] ?></p></td>
                     <td><p class="tb_field_mini"><?php echo $auction['bird_minimum_price'] ?></p></td>
-                    <td><p class="tb_field_max"><?php echo $auction['bird_max_price'] ?></p></td>
                     <td><p class="tb_field_hot"><?php echo $auction['hot_price'] ?></p></td>
                     <td><p class="tb_field_bird_current"><?php echo '£' . $auction['current_bird_price'] ?></p></td>
                     <td><p class="tb_field_status"><?php echo $auction['status'] ?></p></td>
-                    <td><p><?php echo $auction['elapsed_time'] ?></p></td>
+                    <td>
+                    <?php if(empty($auction['bid_winner_id'])) { ?>
+                        <p class="tb_field_max" style="color: red"> No </p>
+                    <?php }else{ ?>
+                        <p class="tb_field_max" style="color: green"> Have </p>
+                    <?php } ?>
+                    </td>
+                    <td>
+                    <?php if($auction['finish'] == TRUE){ ?>
+                        <p style="color:red;">End Bird!</p>
+                    <?php }else{ ?>
+                        <p><?php echo $auction['elapsed_time'] ?></p>
+                    <?php } ?>
+                    </td>
                     <td>
                     <?php if ($auction['approve'] == FALSE || $auction['approve'] == 0){ ?>
                     <p style="color:red">Need Approve</p>

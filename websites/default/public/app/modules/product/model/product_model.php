@@ -20,7 +20,7 @@
 
         public function checkProductExist($id){
             try{
-                $sql = "SELECT id, approve, current_bird_price, bird_max_price, bird_minimum_price, end_at, user_id FROM product WHERE id=:id";
+                $sql = "SELECT finish, bid_winner_id, id, approve, current_bird_price, bird_max_price, bird_minimum_price, end_at, user_id FROM product WHERE id=:id";
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->bindValue(":id", $id);
                 $stmt->execute();
@@ -33,8 +33,8 @@
 
         public function getProductById($id){
             try{
-                $sql = "SELECT p.id, p.approve, p.name, p.description, p.image, p.bird_max_price, p.bird_minimum_price,
-                        p.hot_price, p.created_at, p.end_at, p.status, p.current_bird_price, 
+                $sql = "SELECT p.user_id AS product_user_id, p.id, p.finish, p.approve, p.name, p.description, p.image, p.bird_max_price, p.bird_minimum_price,
+                        p.hot_price, p.created_at, p.end_at, p.status, p.current_bird_price, p.bid_winner_id,
                         pt.name AS product_thumbnail,   
                         c.name AS category_name, 
                         u.name AS own_product, u.username AS own_product_username
@@ -61,9 +61,11 @@
         public function getBirdOfAuction($idAuction){
             try{
                 $sql = "SELECT pb.price, pb.created_at, pb.isHot, 
-                        u.username, u.name
+                        u.username, u.name,
+                        p.id AS product_id_win
                         FROM product_bird pb
                         INNER JOIN user u ON u.id = pb.user_id
+                        LEFT JOIN product p ON p.bid_winner_id = pb.id
                         WHERE pb.product_id =:idAuction
                         ORDER BY pb.price DESC";
                 $stmt = $this->pdo->prepare($sql);
@@ -119,11 +121,10 @@
                 if(empty($newArr['current_bird_price']))
                     $newArr['current_bird_price'] = 0.00;
             
-                if(strtotime($newArr['end_at']) <= strtotime($newArr['created_at']))
-                    $newArr['elapsed_time'] = FALSE;
-                else
+                if(strtotime($newArr['end_at']) <= time())
+                    $newArr['finish'] = TRUE;
+
                 $newArr['elapsed_time'] = calculateTime($newArr['created_at'], $newArr['end_at']);
-                
             }
             return $newArr;
         }
@@ -197,6 +198,34 @@
                 $stmt->bindValue(":id", $id);
                 $stmt->execute();
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            catch(PDOException $err){
+                die($err);
+            }
+        }
+
+        public function createHotBidProduct($idProduct, $idUser, $price){
+            try{
+                $sql = "INSERT INTO product_bird(product_id,user_id,price,isHot) VALUES(:idProduct, :idUser, :price, 1)";
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->bindValue(":idProduct", $idProduct);
+                $stmt->bindValue(":idUser", $idUser);
+                $stmt->bindValue(":price", $price);
+                $stmt->execute();
+                return $this->pdo->lastInsertId();
+            }
+            catch(PDOException $err){
+                die($err);
+            }
+        }
+
+        public function finishAuctionWithBid($idProduct, $idBid){
+            try{
+                $sql = "UPDATE product SET bid_winner_id=:idBid, finish=1 WHERE id=:idProduct";
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->bindValue(":idBid", $idBid);
+                $stmt->bindValue(":idProduct", $idProduct);
+                $stmt->execute();
             }
             catch(PDOException $err){
                 die($err);

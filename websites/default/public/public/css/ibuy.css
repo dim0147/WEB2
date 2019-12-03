@@ -252,3 +252,21 @@ main form label, main form input {
 	margin-left: 0 !important;
   }
   
+  .btn1{
+    display: block;
+    width: 200px;
+    height: 30px;
+    background: rgb(248, 13, 25);
+    padding: 7px;
+    text-align: center;
+    border-radius: 7px;
+    color: white!important;
+	font-weight: bold;
+	text-decoration: none;
+	font-size: 20px;
+}
+
+.btn1:hover{
+	text-decoration: none;
+	color: yellow!important;
+}

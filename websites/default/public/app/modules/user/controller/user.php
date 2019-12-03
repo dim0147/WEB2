@@ -211,6 +211,7 @@ class user extends Controller{
     }
 
     public function postAddAuction(){
+        $_POST['maximum_price'] = 0.00;
         if(empty($_SESSION['username'])){
             setHTTPCode(401, "Require login!");
             goUrl('user/addAuction');
@@ -315,7 +316,7 @@ class user extends Controller{
     }
 
     public function postEditAuction(){
-        
+        $_POST['maximum_price'] = 0.00;
         $this->checkPostEditRequest();
         if(empty($_SESSION['username'])){
             echo "Require login!";

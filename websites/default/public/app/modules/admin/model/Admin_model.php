@@ -267,7 +267,7 @@ class Admin_model extends Database{
                     $result[$key]['hot_price'] = 'No';
                 if(empty($product['current_bird_price']))
                     $result[$key]['current_bird_price'] = "No";
-                if(strtotime($product['end_at']) <= strtotime($product['created_at']))
+                if(strtotime($product['end_at']) <= strtotime(date('Y-m-d H:i:s')))
                     $result[$key]['elapsed_time'] = 'End Bird!';
                 else
                     $result[$key]['elapsed_time'] = calculateTime($product['created_at'], $product['end_at']);

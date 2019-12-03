@@ -30,6 +30,7 @@
                        WHERE p.end_at > NOW()
                        AND p.status = 'Open'
                        AND p.approve = 1
+                       AND p.finish = 0
                        GROUP BY p.id
                        ORDER BY p.created_at DESC
                        LIMIT 10";
