@@ -49,8 +49,8 @@
             if((float)$product['bird_minimum_price'] !== 0.00 && $product['finish'] == FALSE){
             ?>
                 <p class="price" style="color:blue">Minimum bid: £<?php echo $product['bird_minimum_price'] ?></p>
-                <?php if($product['finish'] === FALSE){ ?>
-                    <p class="price" style="color:blue">*Please bird more than £<?php echo $product['bird_minimum_price'] ?></p>
+                <?php if($product['finish'] == FALSE){ ?>
+                    <p class="price" style="color:blue">*Please bid more than £<?php echo $product['bird_minimum_price'] ?></p>
                 <?php } ?>
             <?php } ?>
             <!-- Hot price -->
@@ -62,7 +62,7 @@
             <?php } ?>
             <!-- Time left -->
             <?php if($product['finish'] == TRUE){ ?>
-                <h1 style="color:red!important;font-weight:bold;" >This product is end bird!</h1>
+                <h1 style="color:red!important;font-weight:bold;" >This product is end bid!</h1>
             <?php }else{ ?>
             <time>Time left: <?php echo $product['elapsed_time'] ?></time>
             <?php } ?>
@@ -74,7 +74,7 @@
                     <input type="submit" id="placebid" value="Place bid" />
                 <?php } ?>
             </form>
-            <a href="<?php echo URL_WEB.'product/showBidAuction?id='.$product['id']?>">Show all bird of this auction</a>
+            <a href="<?php echo URL_WEB.'product/showBidAuction?id='.$product['id']?>">Show all bid of this auction</a>
             <br>
             Share For More:<br>
             <div style="display:inline-block">

@@ -181,7 +181,7 @@
                 setHTTPCode(400, "Not found category to remove!");
                 goOldUrl();
             }
-            $delCate = $this->model->removeCate($_POST['name']);
+            $delCate = $this->model->removeCate($checkExist[0]['id']);
             if($delCate){
                 setHTTPCode(200, 'Delete success!');
                 goUrl('admin/dashboard');

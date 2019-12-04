@@ -92,11 +92,18 @@ class Admin_model extends Database{
         }
     }
 
-    public function removeCate($name){
+    public function removeCate($id){
         try{
-            $sql = "DELETE FROM category WHERE name = :name";
+            //  Remove product category
+            $sql = "DELETE FROM product_category WHERE category_id = :id";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+            $stmt->execute();
+
+            //  Remove category
+            $sql = "DELETE FROM category WHERE id = :id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_STR);
             $stmt->execute();
             return true;
         }

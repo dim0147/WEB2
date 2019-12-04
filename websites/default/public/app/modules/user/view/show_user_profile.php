@@ -60,7 +60,7 @@
                     <?php if($auction['finish'] == FALSE){ ?>
                         <td><p><?php echo $auction['elapsed_time'] ?></p></td>
                     <?php }else{ ?>
-                        <td><p style="color: red;">Bird End!</p></td>
+                        <td><p style="color: red;">Bid End!</p></td>
                     <?php } ?>
                 </tr>
         <?php } ?>

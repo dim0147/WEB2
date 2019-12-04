@@ -153,12 +153,12 @@
 
     public function checkRequireBird($current_bird, $bird_max, $bird_minimum, $own_product){
         if((float)$bird_max !== 0.00 && ((float)$_POST['amount'] >= (float)$bird_max)){
-            echo "You bird more than accept! Please consider lower! So weird!";
+            echo "You bid more than accept! Please consider lower! So weird!";
             goOldUrl();
         }
             
         if((float)$bird_minimum !== 0.00 && ((float)$_POST['amount'] <= (float)$bird_minimum)){
-            echo "That's a little small, please bird more than £" . $bird_minimum . "!";
+            echo "That's a little small, please bid more than £" . $bird_minimum . "!";
             goOldUrl();
         }
             

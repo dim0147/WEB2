@@ -45,7 +45,7 @@
                 <th>Image</th>
                 <th>Minimum Price</th>
                 <th>Hot Price</th>
-                <th>Current bird</th>
+                <th>Current bid</th>
                 <th>Username</th>
                 <th>Create At</th>
                 <th>End At</th>

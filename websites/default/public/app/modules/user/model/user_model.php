@@ -62,9 +62,9 @@ class User_model extends Database{
 
     public function getBirdUserById($id){
         try{
-            $sql = "SELECT p.current_bird_price, p.image, p.name, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.status,
+            $sql = "SELECT p.current_bird_price, p.finish, p.image, p.name, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.status,
                     pt.product_id, MAX(pt.price) AS user_price, pt.created_at AS time_bird,
-                    GROUP_CONCAT(c.name SEPARATOR ', ') AS product_category
+                    GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS product_category
                     FROM product_bird pt
                     INNER JOIN product p ON p.id = pt.product_id
                     LEFT JOIN product_category pc ON pc.product_id = p.id
@@ -101,7 +101,7 @@ class User_model extends Database{
                     LEFT JOIN category c ON c.id = pc.category_id
                     WHERE p.user_id =:id $approve
                     GROUP BY p.id
-                    ORDER BY p.created_at DESC";
+                    ORDER BY p.approve DESC";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":id", $id);
             $stmt->execute();
@@ -452,7 +452,7 @@ class User_model extends Database{
                     FROM product p
                     LEFT JOIN user u ON u.id=p.user_id
                     LEFT JOIN product_category pc ON pc.product_id = p.id
-                    INNER JOIN category c ON pc.category_id = c.id
+                    LEFT JOIN category c ON pc.category_id = c.id
                     WHERE p.id=:id";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":id", $id);

@@ -31,7 +31,7 @@
     </div>
 
     <div class="bird">
-        <h1 class="title bird_title">Your Bird</h1>
+        <h1 class="title bird_title">Your Bid</h1>
         <?php if(!empty($birds) && is_array($birds)){ ?>
             <table>
                 <tr>
@@ -45,7 +45,7 @@
                     <th>Your_bid</th>
                     <th>Status</th>
                     <th>Time left</th>
-                    <th>Time place bird</th>
+                    <th>Time place bid</th>
                 </tr>
             <?php foreach($birds as $bird){ ?>
                 <tr>
@@ -58,14 +58,20 @@
                     <td><p class="tb_field_bird_current"><?php echo '£' . $bird['current_bird_price'] ?></p></td>
                     <td><p class="tb_field_bird_user"><?php echo '£' . $bird['user_price'] ?></p></td>
                     <td><p class="tb_field_status"><?php echo $bird['status'] ?></p></td>
-                    <td><p><?php echo $bird['elapsed_time'] ?></p></td>
+                    <td>
+                    <?php if($bird['finish'] == TRUE){ ?>
+                        <p style="color:red;">End bid!</p>
+                    <?php }else{ ?>
+                        <p><?php echo $bird['elapsed_time']?></p>
+                    <?php } ?>
+                    </td>
                     <td><p><?php echo $bird['time_bird'] ?></p></td>
                     
                 </tr>
         <?php } ?>
             </table>
             <?php }else{ ?>
-            <p class="no_bird">You don't place any bird!</p>
+            <p class="no_bird">You don't place any bid!</p>
         <?php } ?>
     </div>
 
@@ -111,7 +117,7 @@
                     </td>
                     <td>
                     <?php if($auction['finish'] == TRUE){ ?>
-                        <p style="color:red;">End Bird!</p>
+                        <p style="color:red;">End bid!</p>
                     <?php }else{ ?>
                         <p><?php echo $auction['elapsed_time'] ?></p>
                     <?php } ?>

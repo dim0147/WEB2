@@ -76,8 +76,8 @@
                 $string = "%$string%";
                 $sql = "SELECT p.id, p.name, p.description, p.image, p.current_bird_price, c.name AS category_name
                        FROM category c
-                       INNER JOIN product_category pc ON pc.category_id = c.id
-                       INNER JOIN product p ON p.id = pc.product_id
+                       LEFT JOIN product_category pc ON pc.category_id = c.id
+                       RIGHT JOIN product p ON p.id = pc.product_id
                        WHERE p.name
                        LIKE :string
                        AND p.end_at > NOW()
