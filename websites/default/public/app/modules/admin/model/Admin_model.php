@@ -126,16 +126,18 @@ class Admin_model extends Database{
             $products = $this->getProductOfUser($id);
             $listThumbnail = NULL;
             $listImage = NULL;
+            //  Remove product
             if(!empty($products['id']) && is_array($products['id'])){
                 $listThumbnail = $this->getThumbnailOfProduct($products['id']);
                 $this->removeThumbnailProduct($products['id']);
                 $this->removeCategoryProduct($products['id']);
                 $this->removeReviewProduct($products['id']);
-                $this->removeBirdProduct($products['id']);
+                $this->removeBidProduct($products['id']);
                 $listImage = $products['name'];
             }
+            //  Remove everything from user
             $this->removeProductOfUser($id);
-            $this->removeBirdOfUser($id);
+            $this->removeBidOfUser($id);
             $this->removeReviewOfUser($id);
             $sql = "DELETE FROM user WHERE id=:id";
             $stmt = $this->pdo->prepare($sql);
@@ -159,7 +161,7 @@ class Admin_model extends Database{
         }
     }
 
-    public function removeBirdOfUser($id){
+    public function removeBidOfUser($id){
         $sql = "DELETE FROM product_bird WHERE user_id=:id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":id", $id);
@@ -204,7 +206,7 @@ class Admin_model extends Database{
         return;
     }
 
-    public function removeBirdProduct($listId){
+    public function removeBidProduct($listId){
         $listId = implode(',' , $listId);
         $sql = "DELETE FROM product_bird WHERE product_id IN($listId)";
         $stmt = $this->pdo->prepare($sql);
@@ -248,11 +250,11 @@ class Admin_model extends Database{
 
     public function getAuction(){
         try{
-            $sql = "SELECT p.id, p.approve, p.name, p.image, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.current_bird_price, p.status,u.username
+            $sql = "SELECT p.id, p.approve, p.finish, p.name, p.image, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.current_bird_price, p.status,u.username
                     FROM product p
                     INNER JOIN user u ON p.user_id = u.id
                     GROUP BY p.id
-                    ORDER BY p.approve ASC, p.created_at ASC";
+                    ORDER BY p.approve ASC, p.created_at DESC";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -267,9 +269,8 @@ class Admin_model extends Database{
                     $result[$key]['hot_price'] = 'No';
                 if(empty($product['current_bird_price']))
                     $result[$key]['current_bird_price'] = "No";
-                if(strtotime($product['end_at']) <= strtotime(date('Y-m-d H:i:s')))
-                    $result[$key]['elapsed_time'] = 'End Bird!';
-                else
+                if(strtotime($product['end_at']) <= time())
+                    $result[$key]['finish'] = TRUE;
                     $result[$key]['elapsed_time'] = calculateTime($product['created_at'], $product['end_at']);
             }
             return $result;

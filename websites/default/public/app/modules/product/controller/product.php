@@ -1,12 +1,5 @@
 <?php 
-use PayPal\Api\Amount;
-use PayPal\Api\Details;
-use PayPal\Api\Item;
-use PayPal\Api\ItemList;
-use PayPal\Api\Payer;
-use PayPal\Api\Payment;
-use PayPal\Api\RedirectUrls;
-use PayPal\Api\Transaction;
+
  class product extends Controller{
 
     private $apiContext;
@@ -32,6 +25,8 @@ use PayPal\Api\Transaction;
             exit("Cannot find product!");
         if($product['approve'] == 0 || $product['approve'] == FALSE)
             exit("Product need approve by admin!");
+        if($product['status'] !== 'Open')
+            exit("Product currently not available!");
         $_SESSION['old_url'] = getCurrentURL();
         $this->render(__DIR__ . '/../view/detail.php', ['title' => "Product detail", 'product' => $product, 'category' => $category]);
     }
@@ -42,6 +37,8 @@ use PayPal\Api\Transaction;
         $product = $this->model->getProductById($_GET['id']);
         if(!$product)
             exit("No product found!");
+        if($product['status'] !== 'Open')
+            exit("Product currently not available!");
         $birds = $this->model->getBirdOfAuction($_GET['id']);
         $winnerBird = NULL;
         if($birds){
@@ -79,6 +76,12 @@ use PayPal\Api\Transaction;
            echo "Not found product!";
            goOldUrl();
         }
+
+        // Check if product is Open
+        if($product[0]['status'] !== 'Open'){
+            echo "Product currently not available!";
+            goOldUrl();
+        }
         //  Check if product not approve by admin
         if($product[0]['approve'] == 0 || $product[0]['approve'] == FALSE){
             echo "Product need approve by admin!";
@@ -86,7 +89,12 @@ use PayPal\Api\Transaction;
         }
         //  Check if end_Date smaller than current time
         if(strtotime($product[0]['end_at']) <= time() || $product[0]['finish'] === TRUE || !empty($product[0]['bid_winner_id'])){
-            echo "This auction is finish! You cannot place bird!";
+            echo "This auction is finish! You cannot place bid!";
+            goOldUrl();
+        }
+        //  Check if bid more than hot_price
+        if(!empty($product[0]['hot_price']) && (float)$product[0]['hot_price'] !== 0.00 && ((float)$_POST['amount'] >= (float)$product[0]['hot_price'])){
+            echo "Why you don't buy it with hot price?";
             goOldUrl();
         }
         //  Get id, current_bird, bird max, bird minimum, the owner of product
@@ -126,7 +134,17 @@ use PayPal\Api\Transaction;
 
         $this->checkUserValid($product['product_user_id']);
 
-        if(empty($product['hot_price'])){
+        if($product['status'] !== 'Open'){
+            echo "Product currently not available!";
+            goOldUrl();
+        }
+
+        if($product['finish'] == TRUE){
+            echo "This product is end bid!";
+            goOldUrl();
+        }
+
+        if(empty($product['hot_price']) || (float)$product['hot_price'] === 0.00){
             echo "This product don't have hot price!";
             goOldUrl();
         }
@@ -200,6 +218,11 @@ use PayPal\Api\Transaction;
             goOldUrl();
         }
 
+        if($checkProd[0]['status'] !== 'Open'){
+            echo "Product currently not available!";
+            goOldUrl();
+        }
+
         //  Check if product not approve by admin
         if($checkProd[0]['approve'] == 0 || $checkProd[0]['approve'] == FALSE){
             echo "Product need approve by admin!";
@@ -214,7 +237,7 @@ use PayPal\Api\Transaction;
             
         $userID = $getUser[0]['id'];
         $this->model->createReview($_POST['id'], $userID, $_POST['review_text']);
-        echo "Create successful!";
+        echo "Create review successful!";
         goOldUrl();
     }
 
@@ -272,7 +295,7 @@ use PayPal\Api\Transaction;
 
     public function completeCheckout(){
         if(empty($_GET['success']) || !isset($_GET['paymentId']) || empty($_GET['username'])){
-            exit("Missing require field!");
+            exit("Missing require field! <br><a href=".URL_WEB.">Click here to go back home!</a>");
         }
         if($_GET['success'] !== 'true'){
             goOldUrl();
@@ -288,29 +311,29 @@ use PayPal\Api\Transaction;
         }
         $result = $payment->toArray();
         if(!isset($result['state'], $result['transactions']['0']['item_list']['items'][0]['sku'], $result['transactions']['0']['item_list']['items'][0]['price'])){
-            exit("Cannot get require information!");
+            exit("Cannot get require information! <br><a href=".URL_WEB.">Click here to go back home!</a>");
         }
         $status = $result['state'];
         $idProduct = $result['transactions']['0']['item_list']['items'][0]['sku'];
         $hotPrice = $result['transactions']['0']['item_list']['items'][0]['price'];  
         if($status != "created" && $status != "approved")
-            exit("Transaction fail!");
+            exit("Transaction fail! <br><a href=".URL_WEB.">Click here to go back home!</a>");
         $product = $this->model->getProductById($idProduct);
         if(!$product)
-            exit("Product not found!");
+            exit("Product not found! <br><a href=".URL_WEB.">Click here to go back home!</a>");
         if($product['finish'] === TRUE || !empty($product['bid_winner_id']))
-            exit("This product is finish bid!");
+            exit("This product is finish bid! <br><a href=".URL_WEB.">Click here to go back home!</a>");
         $user = $this->model->getUserByUsrName($_SESSION['username']);
         if(!$user)
-            exit("User not exist!");
+            exit("User not exist! <br><a href=".URL_WEB.">Click here to go back home!</a>");
         $userId = $user[0]['id'];
         if($product['product_user_id'] == $userId){
-            exit("You cannot bid on your product!");
+            exit("You cannot bid on your product! <br><a href=".URL_WEB.">Click here to go back home!</a>");
         }
         $idNewBid = $this->model->createHotBidProduct($idProduct, $userId, $hotPrice);
         $this->model->updateBirdPriceProd($idProduct, $hotPrice);
         $this->model->finishAuctionWithBid($idProduct, $idNewBid);
-        echo "Congratulation, you have won this auction!";
+        echo "Congratulation, you have won this auction! <br><a href=".URL_WEB.">Click here to go back home!</a>";
     }
 
  }

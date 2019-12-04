@@ -23,10 +23,11 @@
 
         public function getProduct(){
             try{
-                $sql = "SELECT p.id, p.name, p.description, p.image, p.current_bird_price, GROUP_CONCAT(c.name) AS category_name
+                $sql = "SELECT u.name AS name_user, u.username, p.id, p.name, p.description, p.image, p.current_bird_price, GROUP_CONCAT(c.name) AS category_name
                        FROM product p
                        LEFT JOIN product_category pc ON pc.product_id = p.id
                        LEFT JOIN category c ON c.id = pc.category_id
+                       LEFT JOIN user u ON u.id = p.user_id
                        WHERE p.end_at > NOW()
                        AND p.status = 'Open'
                        AND p.approve = 1
@@ -55,7 +56,9 @@
                        AND p.end_at > NOW()
                        AND p.status = 'Open'
                        AND p.approve = 1
-                       GROUP BY p.id";
+                       AND p.finish = 0
+                       GROUP BY p.id
+                       ORDER BY p.created_at DESC";
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->bindValue(":category", $category);
                 $stmt->execute();
@@ -80,7 +83,9 @@
                        AND p.end_at > NOW()
                        AND p.status = 'Open'
                        AND p.approve = 1
-                       GROUP BY p.id";
+                       AND p.finish = 0
+                       GROUP BY p.id
+                       ORDER BY p.created_at DESC";
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->bindValue(":string", $string, PDO::PARAM_STR);
                 $stmt->execute();

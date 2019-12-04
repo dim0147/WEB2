@@ -75,7 +75,7 @@
         <?php if(!empty($auctions) && is_array($auctions)){ ?>
             <table>
                 <tr>
-                    <th style="width:50%">Auction Name</th>
+                    <th>Auction Name</th>
                     <th>Image</th>
                     <th>Category</th>
                     <th>Minimum Price</th>
@@ -85,7 +85,7 @@
                     <th>Bid Win</th>
                     <th>Time left</th>
                     <th>Approve</th>
-                    <th>Action</th>
+                    <th style="width:15%">Action</th>
                 </tr>
             <?php foreach($auctions as $auction){ ?>
                 <tr>
@@ -95,7 +95,13 @@
                     <td><p class="tb_field_mini"><?php echo $auction['bird_minimum_price'] ?></p></td>
                     <td><p class="tb_field_hot"><?php echo $auction['hot_price'] ?></p></td>
                     <td><p class="tb_field_bird_current"><?php echo '£' . $auction['current_bird_price'] ?></p></td>
-                    <td><p class="tb_field_status"><?php echo $auction['status'] ?></p></td>
+                    <td>
+                    <?php if($auction['status'] === 'Open'){ ?>
+                    <p class="tb_field_status">Open</p>
+                     <?php }else{ ?>
+                    <p class="tb_field_status" style="color:red"><?php echo $auction['status'] ?></p>
+                     <?php } ?>
+                    </td>
                     <td>
                     <?php if(empty($auction['bid_winner_id'])) { ?>
                         <p class="tb_field_max" style="color: red"> No </p>
@@ -117,7 +123,7 @@
                     <p style="color:green">Approved</p>
                     <?php } ?>
                     </td>
-                    <td><a class ="link_product action" href="<?php echo URL_WEB . 'user/editAuction?id='.$auction['id']?>">Edit</a> | <a class ="link_product action" href="<?php echo URL_WEB . 'product/detail?id='.$auction['id']?>">View</a>| <a class ="link_product action" href="<?php echo URL_WEB . 'product/showBidAuction?id='.$auction['id']?>">See Birds</a></td>
+                    <td><a class ="link_product action" href="<?php echo URL_WEB . 'user/editAuction?id='.$auction['id']?>">Edit</a> | <a class ="link_product action" href="<?php echo URL_WEB . 'product/detail?id='.$auction['id']?>">View</a>| <a class ="link_product action" href="<?php echo URL_WEB . 'product/showBidAuction?id='.$auction['id']?>">See Bids</a></td>
                 </tr>
         <?php } ?>
             </table>

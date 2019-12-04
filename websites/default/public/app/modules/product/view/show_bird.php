@@ -33,12 +33,20 @@
                     <th>Name</th>
                     <th>Bird</th>
                     <th>Bird_at</th>
+                    <th>Hot Price</th>
                 </tr>
             <?php foreach($birds as $bird){ ?>
                 <tr>
                     <td style="text-align:center;"><a class ="link_product" href="<?php echo URL_WEB . 'user/showUserProfile?username=' .$bird['username'] ?>"><p class="tb_field_name"><?php echo $bird['name'] ?></p></a></td>
                     <td style="text-align:center;"><p class="tb_field_bird_current"><?php echo '£' .$bird['price'] ?></p></td>
                     <td style="text-align:center;"><p class="tb_field_category"><?php echo $bird['created_at'] ?></p></td>
+                    <td style="text-align:center;">
+                    <?php if($bird['isHot'] == TRUE){ ?>
+                        <p style="color:green">Yes</p>
+                    <?php }else{ ?>
+                        <p style="color:black">No</p>
+                    <?php } ?>
+                    </td>
                 </tr>
         <?php } ?>
             </table>

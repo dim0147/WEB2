@@ -94,7 +94,7 @@ class User_model extends Database{
                 $approve = "AND p.approve = 1";
             else
                 $approve = NULL;
-            $sql = "SELECT p.id, p.finish, p.approve, p.current_bird_price, p.image, p.name, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.status,
+            $sql = "SELECT p.id, p.bid_winner_id, p.finish, p.approve, p.current_bird_price, p.image, p.name, p.bird_max_price, p.bird_minimum_price, p.hot_price, p.created_at, p.end_at, p.status,
                     GROUP_CONCAT(c.name SEPARATOR ', ') AS product_category
                     FROM product p
                     LEFT JOIN product_category pc ON pc.product_id = p.id
@@ -439,6 +439,8 @@ class User_model extends Database{
             unset($newArr['thumbnail_id']);
             unset($newArr['category_id']);
             
+            if(strtotime($newArr['end_at']) <= time())
+                $newArr['finish'] = TRUE;
             $newArr['elapsed_time'] = calculateTime($newArr['created_at'], $newArr['end_at']);
         }
         return $newArr;
@@ -446,7 +448,7 @@ class User_model extends Database{
 
     public function getProductWithUsr($id){
         try{
-            $sql = "SELECT p.name, p.image, p.current_bird_price, c.id as category_id, c.name as category_name, u.username
+            $sql = "SELECT p.name, p.finish, p.end_at, p.image, p.current_bird_price, c.id as category_id, c.name as category_name, u.username
                     FROM product p
                     LEFT JOIN user u ON u.id=p.user_id
                     LEFT JOIN product_category pc ON pc.product_id = p.id
@@ -495,7 +497,8 @@ class User_model extends Database{
                 $newArr['category_name'] = [];
             }
             unset($newArr['category_id']);
-
+            if(strtotime($newArr['end_at']) <= time())
+                $newArr['finish'] = true;
         }
         return $newArr;
     }
@@ -564,7 +567,7 @@ class User_model extends Database{
         if(!is_array($arrBird))
             return FALSE;
         foreach($arrBird as $key => $bird){
-            if(strtotime($bird['end_at']) <= strtotime(date('Y-m-d H:i:s')))
+            if(strtotime($bird['end_at']) <= time())
                     $arrBird[$key]['finish'] = TRUE;
             $arrBird[$key]['elapsed_time'] = calculateTime($bird['created_at'], $bird['end_at']);
             if((float)$bird['bird_max_price'] == 0.00)

@@ -22,6 +22,7 @@
         <div>
         <img src="<?php echo URL_WEB . "public/images/".$product['image']?>" style="width:700px; height:300px" alt="product name"><br>
        
+       <!-- Thumbnail -->
         <?php if(!empty($product['product_thumbnail']) && is_array($product['product_thumbnail'])){
             echo " <h4>Thumbnail:</h4> <br>";
                 foreach($product['product_thumbnail'] as $name){    
@@ -31,33 +32,41 @@
         </div>
         
         <section class="details">
+        <!-- Name/ -->
             <h2><?php echo $product['name'] ?></h2>
+        <!-- Category -->
             <?php if(!empty($product['category_name']) && !is_array($product['category_name']))
                     echo "<h3>" .$product['category_name'] . "</h3>";
             ?>
+        <!-- Auction create by  -->
             <p>Auction created by <a href="<?php echo URL_WEB . 'user/showUserProfile?username='.$product['own_product_username'] ?>"><?php echo $product['own_product'] ?></a></p>
+           <!-- Current bid -->
+           <?php if($product['finish'] == FALSE) {?>
             <p class="price" style="color:green">Current bid: £<?php echo $product['current_bird_price'] ?></p>
+            <?php } ?>
+            <!-- Minimum price -->
             <?php 
-            if((float)$product['bird_minimum_price'] !== 0.00){
+            if((float)$product['bird_minimum_price'] !== 0.00 && $product['finish'] == FALSE){
             ?>
                 <p class="price" style="color:blue">Minimum bid: £<?php echo $product['bird_minimum_price'] ?></p>
                 <?php if($product['finish'] === FALSE){ ?>
                     <p class="price" style="color:blue">*Please bird more than £<?php echo $product['bird_minimum_price'] ?></p>
                 <?php } ?>
             <?php } ?>
-
+            <!-- Hot price -->
             <?php 
             if(!empty($product['hot_price']) && (float)$product['hot_price'] !== 0.00 && $product['finish'] == FALSE){
             ?>
                 <p class="price">Hot Price: £<?php echo $product['hot_price'] ?></p>
                 <a class="btn1" href="<?php echo URL_WEB. 'product/placeHotBid?id=' . $product['id']?>">Buy With £<?php echo $product['hot_price']?>!</a><br>
             <?php } ?>
-            
-            <?php if($product['finish'] != FALSE){ ?>
+            <!-- Time left -->
+            <?php if($product['finish'] == TRUE){ ?>
                 <h1 style="color:red!important;font-weight:bold;" >This product is end bird!</h1>
             <?php }else{ ?>
             <time>Time left: <?php echo $product['elapsed_time'] ?></time>
             <?php } ?>
+            <!-- form Place bid -->
             <?php if($product['finish'] == FALSE){ ?>
             <form action="<?php echo URL_WEB . "product/postPlaceBid"?>" class="bid" method="POST">
                 <input name="amount" type="number" min="0.00"  placeholder="Enter bid amount" required/>

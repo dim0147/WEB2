@@ -30,14 +30,14 @@
         <?php if(!empty($auctions) && is_array($auctions)){ ?>
             <table>
                 <tr>
-                    <th style="width:50%">Auction Name</th>
+                    <th >Auction Name</th>
                     <th>Image</th>
                     <th>Category</th>
                     <th>Minimum Price</th>
-                    <th>Maximum Price</th>
                     <th>Hot Price</th>
                     <th>Current_bird</th>
                     <th>Status</th>
+                    <th style="width: 15%">Start Date</th>
                     <th>Time left</th>
                 </tr>
             <?php foreach($auctions as $auction){ ?>
@@ -46,11 +46,22 @@
                     <td><img src="<?php echo URL_WEB?>/public/images/<?php echo $auction['image']?>" height="42" width="42"></td>
                     <td><p class="tb_field_category"><?php echo $auction['product_category'] ?></p></td>
                     <td><p class="tb_field_mini"><?php echo $auction['bird_minimum_price'] ?></p></td>
-                    <td><p class="tb_field_max"><?php echo $auction['bird_max_price'] ?></p></td>
                     <td><p class="tb_field_hot"><?php echo $auction['hot_price'] ?></p></td>
                     <td><p class="tb_field_bird_current"><?php echo '£' . $auction['current_bird_price'] ?></p></td>
-                    <td><p class="tb_field_status"><?php echo $auction['status'] ?></p></td>
-                    <td><p><?php echo $auction['elapsed_time'] ?></p></td>
+                    <td>
+                    <?php if($auction['status'] === 'Open'){ ?>
+                    <p class="tb_field_status">Open</p>
+                     <?php }else{ ?>
+                    <p class="tb_field_status" style="color:red"><?php echo $auction['status'] ?></p>
+                     <?php } ?>
+                    </td>
+                    </td>
+                    <td><p class="tb_field_maximum"><?php echo $auction['created_at'] ?></p></td>
+                    <?php if($auction['finish'] == FALSE){ ?>
+                        <td><p><?php echo $auction['elapsed_time'] ?></p></td>
+                    <?php }else{ ?>
+                        <td><p style="color: red;">Bird End!</p></td>
+                    <?php } ?>
                 </tr>
         <?php } ?>
             </table>

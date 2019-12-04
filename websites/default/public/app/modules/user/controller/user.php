@@ -263,7 +263,7 @@ class user extends Controller{
             $this->model->createCategoryProduct($_POST['category'], $idProd);
         }
         setHTTPCode(200, "Create success!");
-        goUrl('user/addAuction');
+        goUrl('user/profile');
     }
 
     public function postRemoveAuction(){
@@ -303,15 +303,17 @@ class user extends Controller{
         $product = $this->model->getAuctionById($_GET['id']);
         if(!$product)
             exit("Not found product!");
-        $own_product = $product['user_id'];
-        if($userID != $own_product)
+        if($product['finish'] == TRUE)
+            exit("This product is end bid!");
+        $own_product_id = $product['user_id'];
+        if($userID != $own_product_id)
             exit("You are not the owner of this auction!");
         $allCate = $this->model->getCateArr();
         if(!$allCate)
-            exit("Cannot find any category, please add some category!");
-        //  If is array and not empty
+            exit("Cannot find any category, please add some category from admin!");
+        //  If product category not empty and all category not empty too
         if(is_array($product['category_name']) && !empty($product['category_name']))   
-            $allCate = array_diff($allCate, $product['category_name']);
+            $allCate = array_diff($allCate, $product['category_name']); // filler all cate, remove exist cate from product
         $this->render(__DIR__. '/../view/edit_auction.php', ['title' => "Edit auction", "product" => $product, "cateOutProduct" => $allCate]);
     }
 
@@ -333,6 +335,12 @@ class user extends Controller{
         $product = $this->model->getProductWithUsr($_POST['id']);
         if(!$product){
             echo "Not found product!";
+            goOldUrl();
+        }
+
+        //  If product is end bid
+        if($product['finish'] == TRUE){
+            echo "This product is end bid!";
             goOldUrl();
         }
         $own_product = $product['username'];
@@ -374,7 +382,7 @@ class user extends Controller{
         if(!empty($_POST['thumbnail_delete']) && json_decode($_POST['thumbnail_delete'])){
             //  Decode to get array
             $arrDeleteThumb = json_decode($_POST['thumbnail_delete']);
-            //  Get list name of thumb to delete
+            //  Get list name of thumb to delete later in local storage
             $listNameThumb = $this->model->getThumbnailAuction($arrDeleteThumb, $_POST['id']);
             if(!$listNameThumb){ //  If fail
                 echo "Invalid thumbnail to delete!";
@@ -388,7 +396,7 @@ class user extends Controller{
         }
         //  Delete category
         if(!empty($_POST['category'])){
-            //  Get id of category of product
+            //  Get current id of category of product
             $IdsCateProd = array_keys($product['category_name']);
             //  Get category need to add
             $addCate = array_diff($_POST['category'], $IdsCateProd);

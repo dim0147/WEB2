@@ -44,13 +44,12 @@
                 <th>Name</th>
                 <th>Image</th>
                 <th>Minimum Price</th>
-                <th>Max Price</th>
                 <th>Hot Price</th>
+                <th>Current bird</th>
                 <th>Username</th>
                 <th>Create At</th>
                 <th>End At</th>
                 <th>Time Left</th>
-                <th>Current bird</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -59,14 +58,24 @@
                 <td><a class ="link_product" href="<?php echo URL_WEB . 'product/detail?id=' .$auction['id'] ?>"><?php echo $auction['name'] ?></a></td>
                 <td><img src="<?php echo URL_WEB?>/public/images/<?php echo $auction['image']?>" height="42" width="42"></td>
                 <td><p><?php echo $auction['bird_minimum_price'] ?></p></td>
-                <td><p><?php echo $auction['bird_max_price'] ?></p></td>
                 <td><p><?php echo $auction['hot_price'] ?></p></td>
+                <td><p style="color:brown"><?php echo $auction['current_bird_price'] ?></p></td>
                 <td><a class ="link_user" href="<?php echo URL_WEB . 'user/showUserProfile?username=' .$auction['username'] ?>"><?php echo $auction['username'] ?></a></td>
                 <td><p><?php echo $auction['created_at'] ?></p></td>
                 <td><p><?php echo $auction['end_at'] ?></p></td>
-                <td><p style="color:red"><?php echo $auction['elapsed_time'] ?></p></td>
-                <td><p style="color:brown"><?php echo $auction['current_bird_price'] ?></p></td>
-                <td><p><?php echo $auction['status'] ?></p></td>
+                <td>
+                <?php if($auction['finish'] == FALSE){ ?>
+                <p style="color:black"><?php echo $auction['elapsed_time'] ?></p>
+                <?php }else{ ?>
+                    <p style="color:red">End Bid!</p>
+                <?php } ?>
+                </td>
+                <td>
+                <?php if($auction['status'] === 'Open'){ ?>
+                    <p style="color:green">Open</p></td>
+                <?php }else{ ?>
+                    <p style="color:red"><?php echo $auction['status'] ?></p></td>
+                <?php } ?>
                 <td>
                 <?php if($auction['approve'] == 0 || $auction['approve'] == FALSE){ ?>
                     <a class ="btn" style="color:white;background:blue" href="<?php echo URL_WEB . 'admin/approveAuction?id=' .$auction['id'].'&action=approve'?>">Approve</a>

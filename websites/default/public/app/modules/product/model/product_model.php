@@ -20,7 +20,7 @@
 
         public function checkProductExist($id){
             try{
-                $sql = "SELECT finish, bid_winner_id, id, approve, current_bird_price, bird_max_price, bird_minimum_price, end_at, user_id FROM product WHERE id=:id";
+                $sql = "SELECT finish, hot_price, bid_winner_id, id, approve, current_bird_price, bird_max_price, bird_minimum_price, end_at, user_id, status FROM product WHERE id=:id";
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->bindValue(":id", $id);
                 $stmt->execute();
@@ -103,7 +103,11 @@
                 //  Check if not empty and is array but first value of array is null
                 else if(!empty($newArr['category_name']) && is_array($newArr['category_name']) && array_filter($newArr['category_name']) == [])
                     $newArr['category_name'] = NULL;
-
+                //  Check if not empty and is string
+                else if(!empty($newArr['category_name']) && is_string($newArr['category_name']))
+                    $newArr['category_name'] = $newArr['category_name'];
+                else
+                    $newArr['category_name'] = NULL;
 
                 //  Check if is array and the first value not null
                 if(is_array($newArr['product_thumbnail']) && !(array_filter($newArr['product_thumbnail']) == []))
@@ -117,7 +121,7 @@
                 else
                     $newArr['product_thumbnail'] = NULL;
 
-
+                
                 if(empty($newArr['current_bird_price']))
                     $newArr['current_bird_price'] = 0.00;
             
