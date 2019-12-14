@@ -1,6 +1,7 @@
 [css]
 <link rel="stylesheet" href="<?php echo URL_WEB . 'public/css/admin/edit_category.css'?>">
 [/css]
+<a href="/admin/showCategory" class="back-button">< Back</a>   
 <div class="header-form">   
     <form class="form-input" action="<?php getUrlWeb()?>admin/postEditCate" method="POST">
     <input type="hidden" name="oldName" value="<?php echo $category['name']?>">

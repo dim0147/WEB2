@@ -1,7 +1,8 @@
 [css]
 <link rel="stylesheet" href="<?php echo URL_WEB . 'public/css/admin/add_category.css'?>">
 [/css]
-<div class="header-form">   
+<a href="/admin/showCategory" class="back-button">< Back</a>   
+<div class="header-form">
     <form class="form-input" action="<?php getUrlWeb()?>admin/postAddCate" method="POST">
         <div class="element">
             <label  class="name_category" for="name">Name:</label >

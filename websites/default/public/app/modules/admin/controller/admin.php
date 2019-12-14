@@ -104,7 +104,7 @@
             $createCate = $this->model->addCate($_POST['name']);
             if($createCate){
                 setHTTPCode(200, "Create new category successful!");
-                goUrl("admin/addCate");
+                goUrl("admin/showCategory");
             }
             else{
                 setHTTPCode(406, "Error while create new category!");
@@ -135,7 +135,7 @@
                 goOldUrl();
             }
             if($_POST['name'] == $_POST['oldName']){
-                setHTTPCode(400, "Same value");
+                setHTTPCode(400, "Same name!");
                 goOldUrl();
             }
             $checkExist = $this->model->checkCateExist($_POST['oldName']);
@@ -146,7 +146,7 @@
             $editCate = $this->model->editCate($_POST['oldName'], $_POST['name']);
             if($editCate){
                 setHTTPCode(200, "Edit category successful!");
-                goUrl("admin/dashboard");
+                goUrl("admin/showCategory");
             }
             else{
                 setHTTPCode(400, "Error while edit category");
@@ -184,7 +184,7 @@
             $delCate = $this->model->removeCate($checkExist[0]['id']);
             if($delCate){
                 setHTTPCode(200, 'Delete success!');
-                goUrl('admin/dashboard');
+                goUrl('admin/showCategory');
             }
             else{
                 setHTTPCode('Fail while delete category!');

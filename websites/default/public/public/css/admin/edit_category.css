@@ -16,6 +16,7 @@ body{
 
 .header-form{
     text-align: center;
+    margin-top: 20px;
 }
 
 .form-input{
@@ -77,4 +78,12 @@ body{
   .btn:hover {
       color: rgb(224, 224, 224);
       background: rgb(133, 197, 194);
+  }
+  .back-button{
+    font: bold 15px Arial;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #3b3d3d;
+    padding: 10px;
+    margin-bottom: 30px;
   }

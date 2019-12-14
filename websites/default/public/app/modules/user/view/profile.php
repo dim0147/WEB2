@@ -129,7 +129,11 @@
                     <p style="color:green">Approved</p>
                     <?php } ?>
                     </td>
-                    <td><a class ="link_product action" href="<?php echo URL_WEB . 'user/editAuction?id='.$auction['id']?>">Edit</a> | <a class ="link_product action" href="<?php echo URL_WEB . 'product/detail?id='.$auction['id']?>">View</a>| <a class ="link_product action" href="<?php echo URL_WEB . 'product/showBidAuction?id='.$auction['id']?>">See Bids</a></td>
+                    <td>
+                    <?php if($auction['finish'] == FALSE){ ?>
+                    <a class ="link_product action" href="<?php echo URL_WEB . 'user/editAuction?id='.$auction['id']?>">Edit</a> | 
+                    <?php } ?>
+                    <a class ="link_product action" href="<?php echo URL_WEB . 'product/detail?id='.$auction['id']?>">View</a>| <a class ="link_product action" href="<?php echo URL_WEB . 'product/showBidAuction?id='.$auction['id']?>">See Bids</a></td>
                 </tr>
         <?php } ?>
             </table>

@@ -1,6 +1,7 @@
 [css]
 <link rel="stylesheet" href="<?php echo URL_WEB . 'public/css/admin/add_category.css'?>">
 [/css]
+<a href="/admin/showCategory" class="back-button">< Back</a>   
 <div class="header-form">   
     <form class="form-input" action="<?php getUrlWeb()?>admin/postRemoveCate" method="POST" onsubmit="return confirm('Do you want to delete this category?')">
         <div class="element">
