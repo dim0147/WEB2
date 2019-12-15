@@ -1,12 +1,12 @@
 <?php 
-    // Dir define
+    // Module dir define
     DEFINE('MODULE_DIR', 'app/modules');
 
     //  Index, home module, URL Website
     DEFINE('HOME_MODULE', 'home');
     DEFINE('URL_WEB', 'https://v.je/');
     
-    //  IMAGE UPLOAD
+    //  DIR IMAGE UPLOAD
     DEFINE("PATH_IMAGE_UPLOAD", getcwd() . '/public/images');
 
     //  DATABASE

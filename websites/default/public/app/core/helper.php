@@ -1,7 +1,4 @@
 <?php 
-function printB($arr){
-    print("<pre>".print_r($arr,true)."</pre>");
-}
 
     /**
      *  Render View, optional render header, footer
@@ -80,12 +77,13 @@ function printB($arr){
 		
 		http_response_code($code);
 		if($print)
-		echo $strStatus;
+			echo $strStatus;
 	}
 
 	function getUrlWeb(){
 		echo URL_WEB;
 	}
+
 
 	function insertString($strInsert, $strFindToIns, $context){
 		$po = strpos($context, $strFindToIns);
@@ -94,6 +92,7 @@ function printB($arr){
 		return $newContext;
 	}
 
+	//	Get string between two word
 	function getStringBetween($string, $start, $end){
 		$ini = strpos($string, $start);
 		if(!$ini)
@@ -103,9 +102,10 @@ function printB($arr){
 		if(!$endP)
 			return false;
 		$length = $endP - $actualPo;
-		return  substr($string, $actualPo, $length);
+		return substr($string, $actualPo, $length);
 	}
 
+	//	Delete string between two word
 	function deleteString($string, $start, $end = NULL){
 		if($end === NULL){
 			return str_replace($start, '' ,$string);
@@ -133,7 +133,7 @@ function printB($arr){
 			return $newNameImg;
 	}
 
-	function calculateTime($start, $end, $format = '%m months %d days %H hours %i minutes %s seconds'){
+	function calculateTime($start, $end, $format = '%m months %d days %H hours %i minutes'){
 		$start = new DateTime($start);
 		$end = new DateTime($end);
 		$elapsed = $start->diff($end);

@@ -9,7 +9,7 @@
             //	Check if header and footer file is exist
             if(!file_exists($headerFile) || !file_exists($menuFile) || !file_exists($footerFile))
             {
-                setHTTPCode(500, "Missing header or footer template!");
+                setHTTPCode(500, "Missing header or footer or menu template!");
                 exit();
             }
             //	Check if file render is not exist
@@ -42,12 +42,14 @@
             //  Validate  css
             if(strpos($content, "<@yield css>") !== FALSE)
                 $content = $this->cssCompiler($content);
+            //  If $this->cssCompiler($content) has been call, then [css][/css] will be remove, check if their has been remove
             if(strpos($content, "[css]") !== FALSE || strpos($content, "[/css]") !== FALSE)
                 die("Require <@yield css> to use [css] tag!");
 
             //  Validate  js script
             if(strpos($content, "<@yield js>") !== FALSE)
                 $content = $this->scriptCompiler($content);
+                 //  If $this->jsCompiler($content) has been call, then [js][/js] will be remove, check if their has been remove
             if(strpos($content, "[js]") !== FALSE || strpos($content, "[/js]") !== FALSE)
                 die("Require <@yield js> to use [js] tag!");
             return $content;
