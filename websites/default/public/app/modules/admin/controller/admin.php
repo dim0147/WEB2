@@ -49,12 +49,12 @@
         public function postRegister(){
             if(!empty($_SESSION['username']) || empty($_POST['name']) || empty($_POST['username']) || empty(['password'])){
                 setHTTPCode(406, "Missing some field!");
-                goAdminLogin();
+                goOldUrl();
             }
             $checkExist = $this->model->checkAdminExist($_POST['username']);
             if ($checkExist){
                 setHTTPCode(401, 'Admin have exist!');
-                goAdminLogin();
+                goOldUrl();
             }
             $createAdmin = $this->model->createAdmin($_POST['username'], $_POST['password'], $_POST['name']);
             if($createAdmin){

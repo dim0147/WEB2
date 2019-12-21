@@ -94,7 +94,7 @@
         }
         //  Check if bid more than hot_price
         if(!empty($product[0]['hot_price']) && (float)$product[0]['hot_price'] !== 0.00 && ((float)$_POST['amount'] >= (float)$product[0]['hot_price'])){
-            echo "Why you don't buy it with hot price?";
+            echo "Why you don't buy it with hot price? Please buy it with hot price to avoid any error!";
             goOldUrl();
         }
         //  Get id, current_bird, bird max, bird minimum, the owner of product
