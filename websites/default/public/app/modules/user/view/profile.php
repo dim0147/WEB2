@@ -41,7 +41,7 @@
                     <th>Minimum Price</th>
                     <th>Maximum Price</th>
                     <th>Hot Price</th>
-                    <th>Current_bird</th>
+                    <th>Current_bid</th>
                     <th>Your_bid</th>
                     <th>Status</th>
                     <th>Time left</th>

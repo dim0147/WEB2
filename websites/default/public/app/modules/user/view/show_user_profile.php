@@ -35,7 +35,7 @@
                     <th>Category</th>
                     <th>Minimum Price</th>
                     <th>Hot Price</th>
-                    <th>Current_bird</th>
+                    <th>Current_bid</th>
                     <th>Status</th>
                     <th style="width: 15%">Start Date</th>
                     <th>Time left</th>

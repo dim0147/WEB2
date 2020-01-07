@@ -7,7 +7,7 @@
 
 
     <div class="bird">
-        <h1 class="title bird_title">All Bird of <?php echo $product['name']?></h1>
+        <h1 class="title bird_title">All Bids of <?php echo $product['name']?></h1>
         <img style="margin-left: 44%;margin-bottom: 20px;" src="<?php echo URL_WEB?>/public/images/<?php echo $product['image']?>" height="90" width="120">
         <?php if(!empty($winnerBird)){ ?>
             <h1 class="title" style="color:red">The bid winner!!! :</h1>

@@ -4,7 +4,7 @@
     <img src="<?php echo URL_WEB?>public/randombanner.php" alt="Banner" />
 
     <main>
-        <h1>Latest Listings / Search Results / Category listing</h1>
+        <h1>Latest Listings / TOP 10 Auction</h1>
         <?php if(!empty($products && is_array($products))){ ?>
         <ul class="productList">
             <?php foreach($products as $prod){ ?>
