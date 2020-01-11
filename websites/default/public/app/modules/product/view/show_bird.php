@@ -14,8 +14,8 @@
             <table>
                 <tr>
                     <th>Name</th>
-                    <th>Bird</th>
-                    <th>Bird_at</th>
+                    <th>Bid</th>
+                    <th>Bid_at</th>
                 </tr>
                 <tr>
                     <td style="text-align:center;"><a class ="link_product" href="<?php echo URL_WEB . 'user/showUserProfile?username=' .$winnerBird['username'] ?>"><p class="tb_field_name"><?php echo $winnerBird['name'] ?></p></a></td>
@@ -31,8 +31,8 @@
             <table>
                 <tr>
                     <th>Name</th>
-                    <th>Bird</th>
-                    <th>Bird_at</th>
+                    <th>Bid</th>
+                    <th>Bid_at</th>
                     <th>Hot Price</th>
                 </tr>
             <?php foreach($birds as $bird){ ?>
@@ -51,7 +51,7 @@
         <?php } ?>
             </table>
             <?php }else{ ?>
-            <p class="no_bird">This auction don't have any bird!</p>
+            <p class="no_bird">This auction don't have any bid!</p>
         <?php } ?>
     </div>
 

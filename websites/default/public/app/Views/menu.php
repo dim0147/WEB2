@@ -7,8 +7,11 @@
       <ul class="menu-child">
 		<?php if (!empty($_SESSION['is_admin'])){ ?>
 			<li><a href="<?php echo URL_WEB . 'admin/dashboard'?>">Dashboard</a></li>
+			<li><a href="<?php echo URL_WEB . 'admin/addCate'?>">+ Add Category</a></li>
+			<li><a href="<?php echo URL_WEB . 'admin/showAuction'?>">Show All Auction</a></li>
 		<?php } ?>
         <li><a href="<?php echo URL_WEB . 'user/profile'?>">Profile</a></li>
+		<li><a href="<?php echo URL_WEB . 'user/addAuction'?>">+ Add Auction</a></li>
 		<li><a href="<?php echo URL_WEB . 'user/logout'?>">Log out</a></li>
 	  </ul>
     </li>
