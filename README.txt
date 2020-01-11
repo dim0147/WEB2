@@ -1,3 +1,12 @@
 PAYPAL DEVELOPMENT ACCOUNT:
 sb-547n437457828@personal.example.com
 123456789123
+
+USER ACCOUNT:
+user1
+user
+
+
+ADMIN ACCOUNT:
+admin1
+admin
