@@ -839,7 +839,7 @@ CREATE TABLE `category` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `name_2` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -848,7 +848,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (28,'Electronic'),(32,'Fashion'),(30,'Homes'),(31,'Motors'),(29,'Shoes');
+INSERT INTO `category` VALUES (34,'Chair'),(28,'Electronic'),(32,'Fashion'),(30,'Homes'),(31,'Motors'),(29,'Shoes');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -879,7 +879,7 @@ CREATE TABLE `product` (
   KEY `user_id` (`user_id`),
   KEY `bid_winner_id` (`bid_winner_id`),
   CONSTRAINT `product_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -888,7 +888,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (73,'Xiaomi Global Mi TV','Perfect TV','oPU7q_3.jpg',0.00,0.00,0.00,'2020-01-07 12:13:10','2020-03-06 01:00:00',39,NULL,'Open',NULL,1,0),(74,'Iphone 11','IPHONE APPLE','QfM1n_e97ad7292a7dd905a3989702358c4a5f.jpg',0.00,0.00,0.00,'2020-01-07 12:32:51','2020-03-13 01:00:00',39,NULL,'Open',NULL,1,0),(75,'MAYZERO Plus Size Tops Women Blouses Korean Style ','Hot HOT HOT HOTTTTTTTTT!!!!!!!!!!!!!!!','57qm1_12f15c204e728790e60519791a530781.jpg_120x120q80.jpg_.jpg',0.00,200.00,1000.00,'2020-01-07 12:35:03','2020-03-27 01:00:00',39,NULL,'Open',NULL,1,0),(76,'Women Harajuku Tshirt Kawaii Cartoon Tee Shirts Summer Graphic Tee Fas','HOT NUUMBER 2222!!!','ifd5t_d563279c45a0417515af00a3d2591dfb.jpg_120x120q80.jpg_.jpg',0.00,0.00,0.00,'2020-01-07 12:36:46','2020-04-04 00:00:00',39,NULL,'Open',NULL,1,0),(77,'Costel [COD best seller] Kitchenware stickers','Coates Sexy','JgBJ2_c418b0853cd764e61cef5fa46aae35cc.jpg_120x120q80.jpg_.jpg',0.00,0.00,0.00,'2020-01-07 12:38:51','2020-03-20 01:00:00',39,NULL,'Open',NULL,1,0),(78,'Wishful Lantern Crystal Acrylic 3D Wall Stickers','Wishful','rYrri_e7a93e4bf92882a75c64faede92977f2.jpg',0.00,200.00,0.00,'2020-01-07 12:40:58','2020-03-14 01:00:00',39,NULL,'Open',NULL,1,0),(79,'l Motorcycle Covers Rain Waterproof','Moto','HnSlz_c2409a465c74258200c6b521092c69d0.jpg',0.00,0.00,0.00,'2020-01-07 12:43:15','2020-03-20 13:00:00',39,NULL,'Open',NULL,1,0),(80,' Bicycle Motorcycle Covers Rain Protection ','Bicycle','0jp4a_af38201b8f51de163314ca14c7856639.jpg_120x120q80.jpg_ (1).jpg',0.00,0.00,900.00,'2020-01-07 12:44:47','2020-04-11 00:00:00',39,NULL,'Open',NULL,1,0),(81,'Men Sneakers Outdoor Sport Shoes Air Mesh','Sneaky Shoes','QnWnr_8ce3fa62c3a3c88ae13c8c37f9f7002b.jpg_120x120q80.jpg_.jpg',0.00,0.00,500.00,'2020-01-07 12:46:45','2020-03-07 01:00:00',39,NULL,'Open',NULL,1,0),(82,'Duuluup Breathable Lightweight Outdoor','Shoes','ssuuP_8d4a8e35d2fc918118459cf30a00bfa8.jpg_120x120q80.jpg_.jpg',0.00,90.00,800.00,'2020-01-07 12:48:51','2020-02-29 01:00:00',39,NULL,'Open',NULL,1,0);
+INSERT INTO `product` VALUES (73,'Xiaomi Global Mi TV','Perfect TV','oPU7q_3.jpg',0.00,0.00,0.00,'2020-01-07 12:13:10','2020-03-06 01:00:00',39,NULL,'Open',NULL,1,0),(74,'Iphone 11','IPHONE APPLE','QfM1n_e97ad7292a7dd905a3989702358c4a5f.jpg',0.00,0.00,0.00,'2020-01-07 12:32:51','2020-03-13 01:00:00',39,NULL,'Open',NULL,1,0),(75,'MAYZERO Plus Size Tops Women Blouses Korean Style ','Hot HOT HOT HOTTTTTTTTT!!!!!!!!!!!!!!!','57qm1_12f15c204e728790e60519791a530781.jpg_120x120q80.jpg_.jpg',0.00,200.00,1000.00,'2020-01-07 12:35:03','2020-03-27 01:00:00',39,NULL,'Open',NULL,1,0),(76,'Women Harajuku Tshirt Kawaii Cartoon Tee Shirts Summer Graphic Tee Fas','HOT NUUMBER 2222!!!','ifd5t_d563279c45a0417515af00a3d2591dfb.jpg_120x120q80.jpg_.jpg',0.00,0.00,0.00,'2020-01-07 12:36:46','2020-04-04 00:00:00',39,NULL,'Open',NULL,1,0),(77,'Costel [COD best seller] Kitchenware stickers','Coates Sexy','JgBJ2_c418b0853cd764e61cef5fa46aae35cc.jpg_120x120q80.jpg_.jpg',0.00,0.00,0.00,'2020-01-07 12:38:51','2020-03-20 01:00:00',39,NULL,'Open',NULL,1,0),(78,'Wishful Lantern Crystal Acrylic 3D Wall Stickers','Wishful','rYrri_e7a93e4bf92882a75c64faede92977f2.jpg',0.00,200.00,0.00,'2020-01-07 12:40:58','2020-03-14 01:00:00',39,NULL,'Open',NULL,1,0),(79,'l Motorcycle Covers Rain Waterproof','Moto','HnSlz_c2409a465c74258200c6b521092c69d0.jpg',0.00,0.00,0.00,'2020-01-07 12:43:15','2020-03-20 13:00:00',39,NULL,'Open',NULL,1,0),(80,' Bicycle Motorcycle Covers Rain Protection ','Bicycle','0jp4a_af38201b8f51de163314ca14c7856639.jpg_120x120q80.jpg_ (1).jpg',0.00,0.00,900.00,'2020-01-07 12:44:47','2020-04-11 00:00:00',39,NULL,'Open',NULL,1,0),(81,'Men Sneakers Outdoor Sport Shoes Air Mesh','Sneaky Shoes','QnWnr_8ce3fa62c3a3c88ae13c8c37f9f7002b.jpg_120x120q80.jpg_.jpg',0.00,0.00,500.00,'2020-01-07 12:46:45','2020-03-07 01:00:00',39,NULL,'Open',NULL,1,0),(82,'Duuluup Breathable Lightweight Outdoor','Shoes','ssuuP_8d4a8e35d2fc918118459cf30a00bfa8.jpg_120x120q80.jpg_.jpg',0.00,90.00,800.00,'2020-01-07 12:48:51','2020-02-29 01:00:00',39,NULL,'Open',NULL,1,0),(83,'Chair Good','Good chair with strong .','0ff2s_a2d9b208c56ce2e37a856fcda45011cc.jpg_120x120q80.jpg_.jpg',0.00,100.00,900.00,'2020-01-11 16:08:06','2020-03-31 00:00:00',41,45,'Open',900.00,1,1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -911,7 +911,7 @@ CREATE TABLE `product_bird` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `product_bird_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT `product_bird_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -920,6 +920,7 @@ CREATE TABLE `product_bird` (
 
 LOCK TABLES `product_bird` WRITE;
 /*!40000 ALTER TABLE `product_bird` DISABLE KEYS */;
+INSERT INTO `product_bird` VALUES (83,40,110.00,'2020-01-11 16:09:19',43,0),(83,40,150.00,'2020-01-11 16:12:27',44,0),(83,40,900.00,'2020-01-11 16:15:06',45,1);
 /*!40000 ALTER TABLE `product_bird` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -946,7 +947,7 @@ CREATE TABLE `product_category` (
 
 LOCK TABLES `product_category` WRITE;
 /*!40000 ALTER TABLE `product_category` DISABLE KEYS */;
-INSERT INTO `product_category` VALUES (73,28),(74,28),(75,32),(76,32),(77,28),(77,30),(78,30),(79,31),(80,31),(81,32),(81,29),(82,32),(82,29);
+INSERT INTO `product_category` VALUES (73,28),(74,28),(75,32),(76,32),(77,28),(77,30),(78,30),(79,31),(80,31),(81,32),(81,29),(82,32),(82,29),(83,34),(83,30),(83,28);
 /*!40000 ALTER TABLE `product_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -975,6 +976,7 @@ CREATE TABLE `product_review` (
 
 LOCK TABLES `product_review` WRITE;
 /*!40000 ALTER TABLE `product_review` DISABLE KEYS */;
+INSERT INTO `product_review` VALUES (83,40,'This auction is awesome!','2020-01-11 16:09:54');
 /*!40000 ALTER TABLE `product_review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -993,7 +995,7 @@ CREATE TABLE `product_thumbnail` (
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`),
   CONSTRAINT `product_thumbnail_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=245 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1002,7 +1004,7 @@ CREATE TABLE `product_thumbnail` (
 
 LOCK TABLES `product_thumbnail` WRITE;
 /*!40000 ALTER TABLE `product_thumbnail` DISABLE KEYS */;
-INSERT INTO `product_thumbnail` VALUES (209,73,'NOERD_fogAE_2.jpg','2020-01-07 14:57:20'),(210,73,'bovNR_sA5LJ_1.jpg','2020-01-07 14:57:20'),(211,74,'QB8gt_96WCW_6b63d6b8b7c8a0adedfa004f8b0d3e46.jpg','2020-01-07 14:57:49'),(212,74,'toGji_fHWLf_35bf9c0b86a9286849550473f079a015.jpg','2020-01-07 14:57:49'),(213,74,'WAdRH_hdcjI_dd88a4dbcdd8e1fa3d146b2d5d55d252.jpg','2020-01-07 14:57:49'),(214,74,'946eO_Mlzp6_245371ed5e62167507c6713a047296a3.jpg','2020-01-07 14:57:49'),(215,74,'fm3Pz_QfM1n_e97ad7292a7dd905a3989702358c4a5f.jpg','2020-01-07 14:57:49'),(216,74,'byE3w_VfFip_838e9fd68905462e5ea0f0cf450069e3.jpg','2020-01-07 14:57:49'),(217,75,'tCyOI_ikAXe_35e39b0cfffd4b3ac8ddc04a885eaeb0.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:29'),(218,75,'vwjOt_ogawc_f9c9dbcea1f277453bf5ad9297838534.jpg_720x720q80.jpg_.jpg','2020-01-07 14:58:29'),(219,75,'58ggx_OSFE5_f208b0c88d2fc93f2897e9905529b626.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:29'),(220,76,'NY2EE_6npN2_a3753098ff7949777bc6b649019a596e.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:54'),(221,76,'rCG56_BcYfT_cbe857db22a9982a15a36f81c5a7ee90.jpg_720x720q80.jpg_.jpg','2020-01-07 14:58:54'),(222,76,'yFbs7_DDQDK_9ce23493109087adb15ea2f96d6779d3.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:54'),(223,76,'sP44W_nO99A_cbe857db22a9982a15a36f81c5a7ee90.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:54'),(224,76,'WtTNu_Ovw37_3c216bc5de7a87a2260c7391308b0415.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:54'),(225,77,'9P5SY_jcf1h_28a787570cd040087f7ed35e0c24de78.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:24'),(226,77,'CkK92_L2VmG_cc64055cee1f15ac151cb36d433c3f7f.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:24'),(227,77,'pHBJ5_zDBGk_cc64055cee1f15ac151cb36d433c3f7f.jpg_720x720q80.jpg_.jpg','2020-01-07 14:59:24'),(228,78,'Z1exy_1RpXC_cffb9c8358f271e5161f6357dda0c114.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:45'),(229,78,'k2Nog_s0qPD_586faa07632065f926c01a74ce4e0c49.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:45'),(230,78,'ECNXk_T9pli_068580d859be1b62117d0ddb21a930cb.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:45'),(231,78,'JgHbN_XoAwj_4de9cab8d6f5ec06303ee4e0239eb2c7.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:45'),(232,81,'scYWk_4lNM0_44e9f64f65bd2adb27d4e51e4f6149a9.jpg','2020-01-07 15:00:28'),(233,81,'U4kC1_H1KMW_f25bb717401f188b435d36c1b52eaed4.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:28'),(234,81,'VuWvI_i4BZH_b04e767f3e4e45a92aded365a818cb02.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:28'),(235,81,'xFGXe_LS8ay_59d429944119d946036333d72b4d344b.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:28'),(236,81,'bMEzu_mvMcx_44e9f64f65bd2adb27d4e51e4f6149a9.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:28'),(237,81,'K5cPV_qOysI_cdb9ece5fbf218c5edb5ccb28a8aaa21.jpg','2020-01-07 15:00:28'),(238,81,'saPAL_yBBo3_a729351b3ae386087a0419f66648a4d9.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:28'),(239,82,'LOKL1_sE8Lv_fe02534dcd8b83ac33b10ee644d8c571.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:52'),(240,82,'kQoMG_ZdHKx_3589dfbb4afd6df5e50a71ccf9be2ffe.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:52');
+INSERT INTO `product_thumbnail` VALUES (209,73,'NOERD_fogAE_2.jpg','2020-01-07 14:57:20'),(210,73,'bovNR_sA5LJ_1.jpg','2020-01-07 14:57:20'),(211,74,'QB8gt_96WCW_6b63d6b8b7c8a0adedfa004f8b0d3e46.jpg','2020-01-07 14:57:49'),(212,74,'toGji_fHWLf_35bf9c0b86a9286849550473f079a015.jpg','2020-01-07 14:57:49'),(213,74,'WAdRH_hdcjI_dd88a4dbcdd8e1fa3d146b2d5d55d252.jpg','2020-01-07 14:57:49'),(214,74,'946eO_Mlzp6_245371ed5e62167507c6713a047296a3.jpg','2020-01-07 14:57:49'),(215,74,'fm3Pz_QfM1n_e97ad7292a7dd905a3989702358c4a5f.jpg','2020-01-07 14:57:49'),(216,74,'byE3w_VfFip_838e9fd68905462e5ea0f0cf450069e3.jpg','2020-01-07 14:57:49'),(217,75,'tCyOI_ikAXe_35e39b0cfffd4b3ac8ddc04a885eaeb0.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:29'),(218,75,'vwjOt_ogawc_f9c9dbcea1f277453bf5ad9297838534.jpg_720x720q80.jpg_.jpg','2020-01-07 14:58:29'),(219,75,'58ggx_OSFE5_f208b0c88d2fc93f2897e9905529b626.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:29'),(220,76,'NY2EE_6npN2_a3753098ff7949777bc6b649019a596e.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:54'),(221,76,'rCG56_BcYfT_cbe857db22a9982a15a36f81c5a7ee90.jpg_720x720q80.jpg_.jpg','2020-01-07 14:58:54'),(222,76,'yFbs7_DDQDK_9ce23493109087adb15ea2f96d6779d3.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:54'),(223,76,'sP44W_nO99A_cbe857db22a9982a15a36f81c5a7ee90.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:54'),(224,76,'WtTNu_Ovw37_3c216bc5de7a87a2260c7391308b0415.jpg_120x120q80.jpg_.jpg','2020-01-07 14:58:54'),(225,77,'9P5SY_jcf1h_28a787570cd040087f7ed35e0c24de78.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:24'),(226,77,'CkK92_L2VmG_cc64055cee1f15ac151cb36d433c3f7f.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:24'),(227,77,'pHBJ5_zDBGk_cc64055cee1f15ac151cb36d433c3f7f.jpg_720x720q80.jpg_.jpg','2020-01-07 14:59:24'),(228,78,'Z1exy_1RpXC_cffb9c8358f271e5161f6357dda0c114.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:45'),(229,78,'k2Nog_s0qPD_586faa07632065f926c01a74ce4e0c49.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:45'),(230,78,'ECNXk_T9pli_068580d859be1b62117d0ddb21a930cb.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:45'),(231,78,'JgHbN_XoAwj_4de9cab8d6f5ec06303ee4e0239eb2c7.jpg_120x120q80.jpg_.jpg','2020-01-07 14:59:45'),(232,81,'scYWk_4lNM0_44e9f64f65bd2adb27d4e51e4f6149a9.jpg','2020-01-07 15:00:28'),(233,81,'U4kC1_H1KMW_f25bb717401f188b435d36c1b52eaed4.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:28'),(234,81,'VuWvI_i4BZH_b04e767f3e4e45a92aded365a818cb02.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:28'),(235,81,'xFGXe_LS8ay_59d429944119d946036333d72b4d344b.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:28'),(236,81,'bMEzu_mvMcx_44e9f64f65bd2adb27d4e51e4f6149a9.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:28'),(237,81,'K5cPV_qOysI_cdb9ece5fbf218c5edb5ccb28a8aaa21.jpg','2020-01-07 15:00:28'),(238,81,'saPAL_yBBo3_a729351b3ae386087a0419f66648a4d9.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:28'),(239,82,'LOKL1_sE8Lv_fe02534dcd8b83ac33b10ee644d8c571.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:52'),(240,82,'kQoMG_ZdHKx_3589dfbb4afd6df5e50a71ccf9be2ffe.jpg_120x120q80.jpg_.jpg','2020-01-07 15:00:52'),(241,83,'g2Yyw_b695fb28a6c707a16591989968017a20.jpg_120x120q80.jpg_.jpg','2020-01-11 16:08:06'),(243,83,'QYF2y_e0c8bcbe5242f7daba8beda38aeac1ab.jpg_720x720q80.jpg_.jpg','2020-01-11 16:08:06');
 /*!40000 ALTER TABLE `product_thumbnail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1022,7 +1024,7 @@ CREATE TABLE `user` (
   `type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1031,7 +1033,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (38,'admin','$2y$10$fodKhr3BIcifn9dlH6vvC.xHssTL8t3Y2MHcKtISm5KkqB/tKf9Nu','ADMIN','2020-01-07 12:05:01','admin'),(39,'user','$2y$10$vZ9Y.kwwzvqOTbtRqb3vQemDmsjPd0c.GVcaJh15tgEj1GYc/vdru','USER','2020-01-07 12:05:20','user');
+INSERT INTO `user` VALUES (38,'admin','$2y$10$fodKhr3BIcifn9dlH6vvC.xHssTL8t3Y2MHcKtISm5KkqB/tKf9Nu','ADMIN','2020-01-07 12:05:01','admin'),(39,'user','$2y$10$vZ9Y.kwwzvqOTbtRqb3vQemDmsjPd0c.GVcaJh15tgEj1GYc/vdru','USER','2020-01-07 12:05:20','user'),(40,'admin1','$2y$10$6nf9fW1gSzJ6AF5heUMWku7gvEAfXlFt4Q0v4C13QQLAq5NTVct96','admin123','2020-01-11 16:05:50','admin'),(41,'user1','$2y$10$nI5UWlfSrhtZsWzcix2CUOd5W43vEBsQ8Tq4YTaHsGMlT9k69CBrG','UserHandSome','2020-01-11 16:06:58','user');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1044,4 +1046,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-01-07 15:06:30
+-- Dump completed on 2020-01-11 16:39:06
